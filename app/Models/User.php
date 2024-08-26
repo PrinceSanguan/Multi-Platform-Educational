@@ -45,6 +45,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_active' => 'boolean',
     ];
 
     public function getFilamentAvatarUrl(): ?string
@@ -60,6 +61,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return $this->is_active;
     }
 }
