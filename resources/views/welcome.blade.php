@@ -1,3 +1,9 @@
+@php
+    use App\Models\Setting;
+
+    $siteName = Setting::get('site_name', 'Default Site Name');
+    $siteLogo = Setting::get('site_logo');
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,13 +41,18 @@
             text-decoration: none;
         }
     </style>
+    
 </head>
 <body class="antialiased bg-gray-100">
 
     <!-- Navbar -->
     <nav class="bg-white shadow fixed w-full flex items-center justify-between p-5 z-50">
         <a href="#" class="flex items-center">
-            <img src="https://via.placeholder.com/150" alt="Logo" class="h-12">
+            @if ($siteLogo)
+            <img src="{{ asset('storage/' . $siteLogo) }}" alt="Site Logo">
+        @else
+            <p>No logo uploaded.</p>
+        @endif
         </a>
         <button class="block md:hidden">
             <span class="navbar-toggler-icon"></span>
