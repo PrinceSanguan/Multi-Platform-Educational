@@ -9,11 +9,24 @@ class StudentActivity extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'status'];
+    protected $fillable = ['name', 'description', 'type', 'status', 'section_id'];
 
-    // Scope for filtering visible activities
-    public function scopeVisible($query)
+    // Relationship to the section
+    public function section()
     {
-        return $query->where('status', 'visible');
+        return $this->belongsTo(Section::class);
+    }
+
+    // Scope for filtering by type
+    public function scopeType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
+
+    // Method to toggle visibility status
+    public function toggleVisibility()
+    {
+        $this->status = $this->status === 'visible' ? 'hidden' : 'visible';
+        $this->save();
     }
 }
