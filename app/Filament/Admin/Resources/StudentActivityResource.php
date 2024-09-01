@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\StudentActivityResource\Pages;
 use App\Filament\Admin\Resources\StudentActivityResource\RelationManagers;
 use App\Models\StudentActivity;
+use App\Models\User;
 use Filament\Tables\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -38,17 +39,32 @@ class StudentActivityResource extends Resource
                 ])
                 ->default('visible')
                 ->required(),
+            Select::make('section_id')
+                ->label('Section')
+                ->relationship('section', 'name')
+                ->required(),
+            Select::make('students')
+                ->label('Assign Students')
+                ->multiple()
+                ->relationship('students', 'name')
+                ->preload()
+                ->searchable()
+                ->getSearchResultsUsing(fn (string $search) => User::role('student')->where('name', 'like', "%{$search}%")->pluck('name', 'id'))
+                ->options(User::role('student')->pluck('name', 'id')),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                TextColumn::make('name')->sortable(),
-                TextColumn::make('status')->sortable(),
-                TextColumn::make('created_at')->dateTime(),
-            ])
+        ->columns([
+            TextColumn::make('name')->sortable(),
+            TextColumn::make('status')->sortable(),
+            TextColumn::make('section.name') // Display section name
+                ->label('Section')
+                ->sortable(),
+            TextColumn::make('created_at')->dateTime(),
+        ])
             ->actions([
                 Action::make('toggleStatus')
                     ->label(fn (StudentActivity $record): string => $record->status === 'visible' ? 'Hide' : 'Unhide')

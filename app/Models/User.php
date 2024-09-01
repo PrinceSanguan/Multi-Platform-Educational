@@ -74,5 +74,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         {
             return $this->hasMany(Module::class);
         }
-
+        public function sections()
+        {
+            return $this->belongsToMany(Section::class, 'section_user', 'user_id', 'section_id');
+        }
 }
