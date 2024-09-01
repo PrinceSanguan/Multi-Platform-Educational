@@ -25,6 +25,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'email',
         'password',
         'avatar_url',
+        'section_id',
     ];
 
     /**
@@ -72,10 +73,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
          */
         public function module()
         {
-            return $this->hasMany(Module::class);
+            return $this->hasMany(Module::class, 'user_id');
         }
-        public function sections()
+        public function section()
         {
-            return $this->belongsToMany(Section::class, 'section_user', 'user_id', 'section_id');
+            return $this->belongsTo(Section::class, 'section_id');
         }
 }

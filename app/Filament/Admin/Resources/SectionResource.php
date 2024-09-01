@@ -5,10 +5,14 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\SectionResource\Pages;
 use App\Filament\Admin\Resources\SectionResource\RelationManagers;
 use App\Models\Section;
+use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -24,9 +28,20 @@ class SectionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
+                TextInput::make('name')->required(),
+                Select::make('students')
+                    ->label('Assign Students')
+                    ->multiple()
+                    ->options(function () {
+                        // Fetch only users with the "student" role who are not assigned to any section
+                        return User::role('student')
+                            ->whereNull('section_id')
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->searchable()
+                    ->preload()
+                    ->relationship('students', 'name'),
             ]);
     }
 
@@ -34,16 +49,10 @@ class SectionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('name')->sortable(),
+                TextColumn::make('students.name')
+                    ->label('Assigned Students')
+                    ->limit(3), // Limit number of names shown
             ])
             ->filters([
                 //

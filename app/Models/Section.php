@@ -23,4 +23,5 @@ class Section extends Model
         return $this->hasMany(StudentActivity::class);
     }
 
+
 }
