@@ -32,16 +32,16 @@ class SectionResource extends Resource
                 Select::make('students')
                     ->label('Assign Students')
                     ->multiple()
+                    ->relationship('students', 'name')
+                    ->preload()
+                    ->searchable()
                     ->options(function () {
-                        // Fetch only users with the "student" role who are not assigned to any section
+
                         return User::role('student')
                             ->whereNull('section_id')
                             ->pluck('name', 'id')
                             ->toArray();
-                    })
-                    ->searchable()
-                    ->preload()
-                    ->relationship('students', 'name'),
+                        }),
             ]);
     }
 
