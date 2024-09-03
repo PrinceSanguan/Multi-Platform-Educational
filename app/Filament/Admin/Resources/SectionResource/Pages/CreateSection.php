@@ -4,7 +4,6 @@ namespace App\Filament\Admin\Resources\SectionResource\Pages;
 
 use App\Filament\Admin\Resources\SectionResource;
 use App\Models\User;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Validation\ValidationException;
 
@@ -15,8 +14,10 @@ class CreateSection extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $this->validateStudentAssignment($data);
+
         return $data;
     }
+
     private function validateStudentAssignment(array $data)
     {
         $assignedStudents = $data['students'] ?? [];
@@ -31,6 +32,4 @@ class CreateSection extends CreateRecord
             }
         }
     }
-
-
 }

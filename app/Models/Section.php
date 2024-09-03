@@ -8,20 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
 
+    protected $fillable = ['name', 'description', 'teacher_id'];
+
+    // Relationship to teacher
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    // Relationship to students
     public function students()
     {
-        return $this->belongsToMany(User::class, 'section_user', 'section_id', 'user_id')
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'student');
-            });
+        return $this->hasMany(User::class);
     }
 
-    public function activities()
+    // Relationship to grades
+    public function grades()
     {
-        return $this->hasMany(StudentActivity::class);
+        return $this->hasMany(Grade::class);
     }
-
-
 }

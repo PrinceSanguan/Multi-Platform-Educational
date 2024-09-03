@@ -16,9 +16,10 @@ class StudentActivity extends Model
     {
         return $query->where('status', 'visible');
 
+    }
 
-}
-public function section() {
+    public function section()
+    {
         return $this->belongsTo(Section::class);
     }
 
