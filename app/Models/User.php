@@ -65,18 +65,18 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->is_active;
     }
 
+    /**
+     * Get all of the comments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function module()
+    {
+        return $this->hasMany(Module::class, 'user_id');
+    }
 
-        /**
-         * Get all of the comments for the User
-         *
-         * @return \Illuminate\Database\Eloquent\Relations\HasMany
-         */
-        public function module()
-        {
-            return $this->hasMany(Module::class, 'user_id');
-        }
-        public function section()
-        {
-            return $this->belongsTo(Section::class, 'section_id');
-        }
+    public function section()
+    {
+        return $this->belongsTo(Section::class, 'section_id');
+    }
 }

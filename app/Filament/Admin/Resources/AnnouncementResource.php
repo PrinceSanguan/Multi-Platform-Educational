@@ -3,23 +3,19 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\AnnouncementResource\Pages;
-use App\Filament\Admin\Resources\AnnouncementResource\RelationManagers;
 use App\Models\Announcement;
 use Filament\Forms;
-use Filament\Forms\Components\Component;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AnnouncementResource extends Resource
 {
     protected static ?string $model = Announcement::class;
 
-    
     protected static ?string $navigationGroup = 'Administration';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -27,15 +23,15 @@ class AnnouncementResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                ->minLength(2)
-                ->maxLength(255)
-                ->columnSpan('full')
-                ->required(),
+                    ->minLength(2)
+                    ->maxLength(255)
+                    ->columnSpan('full')
+                    ->required(),
                 Forms\Components\TextInput::make('description')
-                ->minLength(2)
-                ->maxLength(255)
-                ->columnSpan('full')
-                ->required(),
+                    ->minLength(2)
+                    ->maxLength(255)
+                    ->columnSpan('full')
+                    ->required(),
 
             ]);
     }
@@ -45,11 +41,11 @@ class AnnouncementResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                ->sortable()
-                ->searchable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('description')
-                ->sortable()
-                ->searchable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

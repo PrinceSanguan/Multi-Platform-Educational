@@ -18,11 +18,14 @@ class EditSection extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $this->validateStudentAssignment($data);
+
         return $data;
     }
+
     private function validateStudentAssignment(array $data)
     {
         $assignedStudents = $data['students'] ?? [];
