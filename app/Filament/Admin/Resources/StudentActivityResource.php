@@ -18,7 +18,7 @@ class StudentActivityResource extends Resource
 {
     protected static ?string $model = StudentActivity::class;
 
-    protected static ?string $navigationGroup = 'Modules';
+    protected static ?string $navigationGroup = 'Teachers';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

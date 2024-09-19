@@ -15,7 +15,7 @@ use Filament\Tables\Table;
 class ModuleResource extends Resource
 {
     protected static ?string $model = Module::class;
-
+    protected static ?string $navigationGroup = 'Teachers';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
