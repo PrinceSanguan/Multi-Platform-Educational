@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     use HasFactory;
+
     protected $fillable = ['key', 'value'];
 
     // Retrieve a setting by key with an optional default value

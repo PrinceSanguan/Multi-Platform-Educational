@@ -3,10 +3,8 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\SectionResource\Pages;
-use App\Filament\Admin\Resources\SectionResource\RelationManagers;
 use App\Models\Section;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -14,14 +12,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SectionResource extends Resource
 {
     protected static ?string $model = Section::class;
 
     protected static ?string $navigationGroup = 'Modules';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -41,7 +38,7 @@ class SectionResource extends Resource
                             ->whereNull('section_id')
                             ->pluck('name', 'id')
                             ->toArray();
-                        }),
+                    }),
             ]);
     }
 

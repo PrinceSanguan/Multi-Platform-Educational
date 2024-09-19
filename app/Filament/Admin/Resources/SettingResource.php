@@ -3,22 +3,18 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\SettingResource\Pages;
-use App\Filament\Admin\Resources\SettingResource\RelationManagers;
 use App\Models\Setting;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
-    
+
     protected static ?string $navigationGroup = 'Administration';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -28,16 +24,16 @@ class SettingResource extends Resource
         return $form
             ->schema([
                 TextInput::make('key')
-                ->label('Key')
-                ->required()
-                ->unique(Setting::class, 'key', fn ($record) => $record),
-            TextInput::make('value')
-                ->label('Value'),
-            FileUpload::make('site_logo')
-                ->label('Site Logo')
-                ->image()
-                ->directory('images')
-                ->nullable(),
+                    ->label('Key')
+                    ->required()
+                    ->unique(Setting::class, 'key', fn ($record) => $record),
+                TextInput::make('value')
+                    ->label('Value'),
+                FileUpload::make('site_logo')
+                    ->label('Site Logo')
+                    ->image()
+                    ->directory('images')
+                    ->nullable(),
             ]);
     }
 

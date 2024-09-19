@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name'];
 
     public function students()
@@ -22,6 +23,4 @@ class Section extends Model
     {
         return $this->hasMany(StudentActivity::class);
     }
-
-
 }
