@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Announcement;
 use App\Models\User;
+use App\Models\Announcement;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AnnouncementPolicy

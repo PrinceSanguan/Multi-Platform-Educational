@@ -17,28 +17,31 @@ class SectionResource extends Resource
 {
     protected static ?string $model = Section::class;
 
-    protected static ?string $navigationGroup = 'Teachers';
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
+                TextInput::make('name')
+                    ->required()
+                    ->label('Section Name'),
+
+                // Assign Teachers
+                Select::make('teachers')
+                    ->label('Assign Teachers')
+                    ->multiple()
+                    ->relationship('teachers', 'name') // Use the relationship method for teachers
+                    ->options(User::role('teacher')->pluck('name', 'id')) // Only show users with 'teacher' role
+                    ->preload(),
+
+                // Assign Students
                 Select::make('students')
                     ->label('Assign Students')
                     ->multiple()
-                    ->relationship('students', 'name')
-                    ->preload()
-                    ->searchable()
-                    ->options(function () {
-
-                        return User::role('student')
-                            ->whereNull('section_id')
-                            ->pluck('name', 'id')
-                            ->toArray();
-                    }),
+                    ->relationship('students', 'name') // Use the relationship method for students
+                    ->options(User::role('student')->pluck('name', 'id')) // Only show users with 'student' role
+                    ->preload(),
             ]);
     }
 
@@ -46,10 +49,17 @@ class SectionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable(),
+                TextColumn::make('name')
+                    ->sortable()
+                    ->label('Section Name'),
+
+                TextColumn::make('teachers.name')
+                    ->label('Assigned Teachers')
+                    ->limit(3), // Display up to 3 teachers' names
+
                 TextColumn::make('students.name')
                     ->label('Assigned Students')
-                    ->limit(3), // Limit number of names shown
+                    ->limit(3), // Display up to 3 students' names
             ])
             ->filters([
                 //

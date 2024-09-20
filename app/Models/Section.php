@@ -11,6 +11,9 @@ class Section extends Model
 
     protected $fillable = ['name'];
 
+    /**
+     * The students that belong to this section.
+     */
     public function students()
     {
         return $this->belongsToMany(User::class, 'section_user', 'section_id', 'user_id')
@@ -19,8 +22,14 @@ class Section extends Model
             });
     }
 
-    public function activities()
+    /**
+     * The teachers that belong to this section.
+     */
+    public function teachers()
     {
-        return $this->hasMany(StudentActivity::class);
+        return $this->belongsToMany(User::class, 'section_user', 'section_id', 'user_id')
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'teacher');
+            });
     }
 }

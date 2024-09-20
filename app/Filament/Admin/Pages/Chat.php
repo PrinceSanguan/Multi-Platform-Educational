@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 class Chat extends Page
 {
     use HasPageShield;
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     //protected static string $view = 'filament.admin.pages.chat';
