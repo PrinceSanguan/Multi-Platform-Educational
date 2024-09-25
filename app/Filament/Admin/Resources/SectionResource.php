@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\SectionResource\Pages;
 use App\Models\Section;
 use App\Models\User;
+use Filament\Forms\Components\BelongsToManyMultiSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -17,7 +18,10 @@ class SectionResource extends Resource
 {
     protected static ?string $model = Section::class;
 
+    protected static ?string $navigationGroup = 'Teachers';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
 
     public static function form(Form $form): Form
     {
@@ -26,21 +30,24 @@ class SectionResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->label('Section Name'),
-
+                    BelongsToManyMultiSelect::make('subjects')
+                    ->relationship('subjects', 'name')
+                    ->label('Subjects')
+                    ->required(),
                 // Assign Teachers
                 Select::make('teachers')
                     ->label('Assign Teachers')
                     ->multiple()
-                    ->relationship('teachers', 'name') // Use the relationship method for teachers
-                    ->options(User::role('teacher')->pluck('name', 'id')) // Only show users with 'teacher' role
+                    ->relationship('teachers', 'name')
+                    ->options(User::role('teacher')->pluck('name', 'id')) 
                     ->preload(),
 
                 // Assign Students
                 Select::make('students')
                     ->label('Assign Students')
                     ->multiple()
-                    ->relationship('students', 'name') // Use the relationship method for students
-                    ->options(User::role('student')->pluck('name', 'id')) // Only show users with 'student' role
+                    ->relationship('students', 'name') 
+                    ->options(User::role('student')->pluck('name', 'id')) 
                     ->preload(),
             ]);
     }
