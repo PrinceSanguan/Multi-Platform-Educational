@@ -54,7 +54,6 @@ class AdminPanelProvider extends PanelProvider
                         slug: 'profile'
                     ),
                 \TomatoPHP\FilamentMediaManager\FilamentMediaManagerPlugin::make(),
-                
 
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
                     ->gridColumns([
@@ -68,6 +67,7 @@ class AdminPanelProvider extends PanelProvider
                         'sm' => 2,
                         'lg' => 2,
                     ]),
+             
 
                 \Hasnayeen\Themes\ThemesPlugin::make(),
 

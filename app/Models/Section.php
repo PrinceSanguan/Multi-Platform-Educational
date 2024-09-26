@@ -27,11 +27,12 @@ class Section extends Model
      */
     public function teachers()
     {
-    return $this->belongsToMany(User::class, 'section_user', 'section_id', 'user_id')
+        return $this->belongsToMany(User::class, 'section_user', 'section_id', 'user_id')
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'teacher');
             });
     }
+
     public function subjects()
     {
         return $this->belongsToMany(Subject::class, 'section_subject', 'section_id', 'subject_id');

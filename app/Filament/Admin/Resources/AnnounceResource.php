@@ -2,19 +2,20 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\AnnouncementResource\Pages;
-use App\Models\Announcement;
+use App\Filament\Admin\Resources\AnnounceResource\Pages;
+use App\Filament\Admin\Resources\AnnounceResource\RelationManagers;
+use App\Models\Announce;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AnnouncementResource extends Resource
+class AnnounceResource extends Resource
 {
-    protected static ?string $model = Announcement::class;
-
-    protected static ?string $navigationGroup = 'Administration';
+    protected static ?string $model = Announce::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,16 +24,11 @@ class AnnouncementResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->minLength(2)
-                    ->maxLength(255)
-                    ->columnSpan('full')
-                    ->required(),
-                Forms\Components\TextInput::make('description')
-                    ->minLength(2)
-                    ->maxLength(255)
-                    ->columnSpan('full')
-                    ->required(),
-
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('body')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -41,10 +37,8 @@ class AnnouncementResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->sortable()
+                Tables\Columns\TextColumn::make('body')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -78,9 +72,9 @@ class AnnouncementResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAnnouncements::route('/'),
-            'create' => Pages\CreateAnnouncement::route('/create'),
-            'edit' => Pages\EditAnnouncement::route('/{record}/edit'),
+            'index' => Pages\ListAnnounces::route('/'),
+            'create' => Pages\CreateAnnounce::route('/create'),
+            'edit' => Pages\EditAnnounce::route('/{record}/edit'),
         ];
     }
 }

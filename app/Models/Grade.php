@@ -18,14 +18,16 @@ class Grade extends Model
         'third_quarter',
         'fourth_quarter',
     ];
-    public function user()
-{
-    return $this->belongsTo(User::class);
-}
-public function getAverageAttribute()
-{
-    $total = $this->first_quarter + $this->second_quarter + $this->third_quarter + $this->fourth_quarter;
-    return $total / 4;
-}
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getAverageAttribute()
+    {
+        $total = $this->first_quarter + $this->second_quarter + $this->third_quarter + $this->fourth_quarter;
+
+        return $total / 4;
+    }
 }

@@ -22,7 +22,6 @@ class SectionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-
     public static function form(Form $form): Form
     {
         return $form
@@ -30,7 +29,7 @@ class SectionResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->label('Section Name'),
-                    BelongsToManyMultiSelect::make('subjects')
+                BelongsToManyMultiSelect::make('subjects')
                     ->relationship('subjects', 'name')
                     ->label('Subjects')
                     ->required(),
@@ -39,15 +38,15 @@ class SectionResource extends Resource
                     ->label('Assign Teachers')
                     ->multiple()
                     ->relationship('teachers', 'name')
-                    ->options(User::role('teacher')->pluck('name', 'id')) 
+                    ->options(User::role('teacher')->pluck('name', 'id'))
                     ->preload(),
 
                 // Assign Students
                 Select::make('students')
                     ->label('Assign Students')
                     ->multiple()
-                    ->relationship('students', 'name') 
-                    ->options(User::role('student')->pluck('name', 'id')) 
+                    ->relationship('students', 'name')
+                    ->options(User::role('student')->pluck('name', 'id'))
                     ->preload(),
             ]);
     }
