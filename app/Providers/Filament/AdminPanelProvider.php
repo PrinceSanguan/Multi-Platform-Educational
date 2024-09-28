@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Resources\GradeResource\Widgets\StudentGradeChart;
 use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,6 +19,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -44,6 +46,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
                 \Awcodes\Overlook\Widgets\OverlookWidget::class,
+                StudentGradeChart::class,
             ])
             ->plugins([
                 \Jeffgreco13\FilamentBreezy\BreezyCore::make()
@@ -53,6 +56,7 @@ class AdminPanelProvider extends PanelProvider
                         hasAvatars: true,
                         slug: 'profile'
                     ),
+                \TomatoPHP\FilamentMediaManager\FilamentMediaManagerPlugin::make(),
 
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
                     ->gridColumns([
@@ -68,6 +72,7 @@ class AdminPanelProvider extends PanelProvider
                     ]),
 
                 \Hasnayeen\Themes\ThemesPlugin::make(),
+                 FilamentApexChartsPlugin::make(),
 
                 \Awcodes\LightSwitch\LightSwitchPlugin::make()
                     ->position(\Awcodes\LightSwitch\Enums\Alignment::BottomCenter)

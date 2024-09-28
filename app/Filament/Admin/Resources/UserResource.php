@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -69,6 +70,9 @@ class UserResource extends Resource
                             ->columnSpan('full')
                             ->email(),
 
+                        Toggle::make('is_active')
+                            ->label('Active')
+                            ->inline(false),
                         Forms\Components\TextInput::make('password')
                             ->password()
                             ->confirmed()
@@ -111,6 +115,10 @@ class UserResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('email')
                     ->sortable()
+                    ->searchable(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->sortable()
+                    ->label('Active')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')
                     ->badge()
