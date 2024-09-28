@@ -31,41 +31,39 @@ class GradeResource extends Resource
                     ->label('Student')
                     ->options(User::whereHas('roles', function ($query) {
                         $query->where('name', 'student'); // Assumes Spatie Roles package
-                    })->pluck('name', 'id')) // Fetches students only
-                    ->searchable() // Adds a search option to the select field
-                    ->required(),
-
-                // Section dropdown
-                Select::make('section_id')
-                    ->label('Section')
-                    ->options(Section::all()->pluck('name', 'id')) // Fetches sections
+                    })->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
 
-                // Subject dropdown
+                Select::make('section_id')
+                    ->label('Section')
+                    ->options(Section::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->required(),
+
                 Select::make('subject_id')
                     ->label('Subject')
-                    ->options(Subject::all()->pluck('name', 'id')) // Fetches subjects
+                    ->options(Subject::all()->pluck('name', 'id')) // Assuming you have a subjects table
                     ->searchable()
                     ->required(),
 
                 TextInput::make('first_quarter')
                     ->numeric()
-                    ->label('First Quarter')
-                    ,
+                    ->label('First Quarter'),
+
                 TextInput::make('second_quarter')
                     ->numeric()
-                    ->label('Second Quarter')
-                    ,
+                    ->label('Second Quarter'),
+
                 TextInput::make('third_quarter')
                     ->numeric()
-                    ->label('Third Quarter')
-                    ,
+                    ->label('Third Quarter'),
+
                 TextInput::make('fourth_quarter')
                     ->numeric()
-                    ->label('Fourth Quarter')
-                    ,
+                    ->label('Fourth Quarter'),
             ]);
+
     }
 
     public static function table(Table $table): Table
@@ -73,7 +71,7 @@ class GradeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('user.name')->label('Student')->sortable(),
-                TextColumn::make('subject')->sortable(),
+                TextColumn::make('subject.name')->label('Subject')->sortable(),
                 TextColumn::make('first_quarter')->label('First Quarter'),
                 TextColumn::make('second_quarter')->label('Second Quarter'),
                 TextColumn::make('third_quarter')->label('Third Quarter'),
@@ -82,7 +80,6 @@ class GradeResource extends Resource
                     ->label('Average Score')
                     ->getStateUsing(fn ($record) => $record->average)
                     ->sortable(),
-
             ])
             ->filters([
                 //

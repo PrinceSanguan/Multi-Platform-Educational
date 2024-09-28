@@ -9,7 +9,5 @@ class Announce extends Model
 {
     use HasFactory;
 
-
     protected $guarded = [];
-
 }

@@ -11,8 +11,8 @@ class Grade extends Model
 
     protected $fillable = [
         'user_id',
-        'subject',
-        'score',
+        'section_id',
+        'subject_id',
         'first_quarter',
         'second_quarter',
         'third_quarter',
@@ -22,6 +22,16 @@ class Grade extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
     }
 
     public function getAverageAttribute()

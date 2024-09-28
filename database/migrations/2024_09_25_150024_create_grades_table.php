@@ -13,22 +13,14 @@ return new class extends Migration
     {
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
-            // Foreign key to the users table
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-
-            // Subject field
-            $table->string('subject');
-
-            // Quarter grade fields
+            $table->foreignId('section_id')->constrained()->onDelete('cascade');
+            $table->foreignId('subject_id')->constrained()->onDelete('cascade'); // Use subject_id as a foreign key
             $table->float('first_quarter')->nullable();
             $table->float('second_quarter')->nullable();
             $table->float('third_quarter')->nullable();
             $table->float('fourth_quarter')->nullable();
-
-            // Overall score field (if needed)
             $table->float('score')->nullable();
-
-            // Timestamps
             $table->timestamps();
         });
     }
