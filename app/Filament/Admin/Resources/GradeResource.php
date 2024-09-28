@@ -52,19 +52,19 @@ class GradeResource extends Resource
                 TextInput::make('first_quarter')
                     ->numeric()
                     ->label('First Quarter')
-                    ->required(),
+                    ,
                 TextInput::make('second_quarter')
                     ->numeric()
                     ->label('Second Quarter')
-                    ->required(),
+                    ,
                 TextInput::make('third_quarter')
                     ->numeric()
                     ->label('Third Quarter')
-                    ->required(),
+                    ,
                 TextInput::make('fourth_quarter')
                     ->numeric()
                     ->label('Fourth Quarter')
-                    ->required(),
+                    ,
             ]);
     }
 

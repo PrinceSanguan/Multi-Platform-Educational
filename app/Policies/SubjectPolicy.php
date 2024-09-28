@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\StudentActivity;
+use App\Models\Subject;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class StudentActivityPolicy
+class SubjectPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class StudentActivityPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_student::activity');
+        return $user->can('view_any_subject');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, StudentActivity $studentActivity): bool
+    public function view(User $user, Subject $subject): bool
     {
-        return $user->can('view_student::activity');
+        return $user->can('view_subject');
     }
 
     /**
@@ -31,23 +31,23 @@ class StudentActivityPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_student::activity');
+        return $user->can('create_subject');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, StudentActivity $studentActivity): bool
+    public function update(User $user, Subject $subject): bool
     {
-        return $user->can('update_student::activity');
+        return $user->can('update_subject');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, StudentActivity $studentActivity): bool
+    public function delete(User $user, Subject $subject): bool
     {
-        return $user->can('delete_student::activity');
+        return $user->can('delete_subject');
     }
 
     /**
@@ -55,13 +55,13 @@ class StudentActivityPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_student::activity');
+        return $user->can('delete_any_subject');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, StudentActivity $studentActivity): bool
+    public function forceDelete(User $user, Subject $subject): bool
     {
         return $user->can('{{ ForceDelete }}');
     }
@@ -77,7 +77,7 @@ class StudentActivityPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, StudentActivity $studentActivity): bool
+    public function restore(User $user, Subject $subject): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -93,7 +93,7 @@ class StudentActivityPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, StudentActivity $studentActivity): bool
+    public function replicate(User $user, Subject $subject): bool
     {
         return $user->can('{{ Replicate }}');
     }

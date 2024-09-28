@@ -29,6 +29,9 @@ class AnnounceResource extends Resource
                 Forms\Components\Textarea::make('body')
                     ->required()
                     ->maxLength(255),
+                    Forms\Components\FileUpload::make('image')
+                    ->required(),
+                
             ]);
     }
 
@@ -40,6 +43,7 @@ class AnnounceResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('body')
                     ->searchable(),
+                    Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

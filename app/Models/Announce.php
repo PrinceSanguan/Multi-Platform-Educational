@@ -12,6 +12,4 @@ class Announce extends Model
 
     protected $guarded = [];
 
-
-    
 }
