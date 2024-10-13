@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('guardian_student', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('guardian_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('sections', function (Blueprint $table) {
+            $table->unsignedBigInteger('teacher_id')->constrained('users')->onDelete('cascade'); // Add teacher_id foreign key
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('guardian_student');
+        Schema::table('sections', function (Blueprint $table) {
+            //
+        });
     }
 };
