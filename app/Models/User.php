@@ -7,13 +7,15 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory, HasRoles, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +28,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'password',
         'avatar_url',
         'section_id',
+        'guardian_id',
     ];
 
     /**
@@ -79,4 +82,15 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->hasMany(Grade::class);
     }
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class, 'section_student', 'student_id', 'section_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id'); // Assuming 'parent_id' is the foreign key in the 'users' table
+    }
+
+
 }

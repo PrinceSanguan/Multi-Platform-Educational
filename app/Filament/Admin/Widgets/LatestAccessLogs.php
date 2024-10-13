@@ -6,6 +6,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth; // Import Auth
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Models\Activity;
 
@@ -19,7 +20,10 @@ class LatestAccessLogs extends BaseWidget
     {
         return $table
             ->query(
-                Activity::query()->latest()->take(5)
+                Activity::query()
+                    ->where('causer_id', Auth::id()) // Filter logs by current user
+                    ->latest()
+                    ->take(5)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('log_name')

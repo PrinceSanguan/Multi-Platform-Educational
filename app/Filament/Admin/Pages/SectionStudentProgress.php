@@ -3,11 +3,14 @@
 namespace App\Filament\Admin\Pages;
 
 use App\Models\Section;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class SectionStudentProgress extends Page
 {
+    use HasPageShield;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.admin.pages.section-student-progress';
@@ -16,6 +19,14 @@ class SectionStudentProgress extends Page
 
     protected $listeners = ['sectionDataUpdated' => 'updateChartData'];
 
+    public static function canView(): bool
+    {
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Check if the user has the required roles
+        return $user->hasRole(['super_admin', 'teacher']);
+    }
     public function getSectionData()
     {
         if (! $this->selectedSectionId) {

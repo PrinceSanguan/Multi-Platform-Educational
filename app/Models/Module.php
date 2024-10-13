@@ -20,4 +20,18 @@ class Module extends Model
     {
         return $this->hasOne(User::class);
     }
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class, 'module_section', 'module_id', 'section_id');
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'module_student', 'module_id', 'student_id')
+                    ->where('role', 'student');
+    }
+    public function getArchiveAttribute($value)
+{
+    return storage_path('app/public/' . $value); // Adjust according to your storage configuration
+}
 }

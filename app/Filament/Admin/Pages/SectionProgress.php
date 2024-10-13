@@ -3,10 +3,12 @@
 namespace App\Filament\Admin\Pages;
 
 use App\Models\Section;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
 
 class SectionProgress extends Page
 {
+    use HasPageShield;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Teachers';

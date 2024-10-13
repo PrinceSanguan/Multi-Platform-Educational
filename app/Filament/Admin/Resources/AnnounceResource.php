@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\AnnounceResource\Pages;
 use App\Models\Announce;
 use Filament\Forms;
+use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -51,6 +52,13 @@ class AnnounceResource extends Resource
                         View::make('components.enlarge-image')->viewData([
                             'record' => fn () => $form->getRecord(),
                         ]),
+                        Forms\Components\DatePicker::make('start_date')
+                            ->label('Start Date')
+                            ->required(),
+
+                        Forms\Components\DatePicker::make('end_date')
+                            ->label('End Date')
+                            ->required(),
                     ])
                     ->columns(1),
             ]);
@@ -67,7 +75,16 @@ class AnnounceResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('date_range')
+                    ->form([
+                        Forms\Components\DatePicker::make('start_date')->label('From'),
+                        Forms\Components\DatePicker::make('end_date')->label('To'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['start_date'], fn (Builder $query, $date) => $query->where('created_at', '>=', $date))
+                            ->when($data['end_date'], fn (Builder $query, $date) => $query->where('created_at', '<=', $date));
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

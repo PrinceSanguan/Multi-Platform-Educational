@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('student_activity_user', function (Blueprint $table) {
+        Schema::create('module_section', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('activity_id')->constrained('student_activities')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('module_id')->constrained()->onDelete('cascade');
+            $table->foreignId('section_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_activity_user');
+        Schema::dropIfExists('module_section');
     }
 };

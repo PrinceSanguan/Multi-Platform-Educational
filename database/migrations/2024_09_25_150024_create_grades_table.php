@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('section_id')->constrained()->onDelete('cascade');
-            $table->foreignId('subject_id')->constrained()->onDelete('cascade'); // Use subject_id as a foreign key
+            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('section_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('subject_id')->constrained()->onDelete('cascade'); // Use subject_id as a foreign key
             $table->float('first_quarter')->nullable();
             $table->float('second_quarter')->nullable();
             $table->float('third_quarter')->nullable();
