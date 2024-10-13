@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('modules', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade');
-            $table->string('archive');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->softDeletes(); // Adds the deleted_at column
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('modules');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropSoftDeletes(); // Removes the deleted_at column
+        });
     }
 };

@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\StudentActivityResource\Pages;
 use App\Models\StudentActivity;
 use App\Models\User;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -28,6 +29,11 @@ class StudentActivityResource extends Resource
             ->schema([
                 TextInput::make('name')->required(),
                 Textarea::make('description'),
+                FileUpload::make('image_path') // Add the image upload field
+                    ->label('Activity Image')
+                    ->image()
+                    ->directory('student-activities')
+                    ->required(), // Optionally make it required
                 Select::make('status')
                     ->options([
                         'visible' => 'Visible',

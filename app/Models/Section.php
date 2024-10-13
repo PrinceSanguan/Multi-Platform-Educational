@@ -15,13 +15,12 @@ class Section extends Model
      * The students that belong to this section.
      */
     public function students()
-    {
-        return $this->belongsToMany(User::class, 'section_user', 'section_id', 'user_id')
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'student');
-            });
-    }
-
+{
+    return $this->belongsToMany(User::class, 'section_student', 'section_id', 'student_id')
+        ->whereHas('roles', function ($query) {
+            $query->where('name', 'student');
+        });
+}
     /**
      * The teachers that belong to this section.
      */

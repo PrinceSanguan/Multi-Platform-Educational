@@ -4,11 +4,14 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Models\User;
+use Filament\Actions\RestoreAction;
 use Filament\Forms;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +50,6 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-
                 Forms\Components\Grid::make(2)
                     ->schema([
                         Forms\Components\TextInput::make('name')
@@ -69,7 +71,6 @@ class UserResource extends Resource
                             ->prefixIcon('heroicon-m-envelope')
                             ->columnSpan('full')
                             ->email(),
-
                         Toggle::make('is_active')
                             ->label('Active')
                             ->inline(false),
@@ -96,6 +97,16 @@ class UserResource extends Resource
                     ])
                     ->columns(1),
 
+                Forms\Components\Section::make('Assign Existing Student')
+                    ->schema([
+                        Forms\Components\Select::make('student_id')
+                            ->label('Select Student')
+                            ->options(User::role('student')->pluck('name', 'id')) // Querying users with 'student' role
+                            ->searchable()
+                            ->nullable() // Allow no student to be selected
+                            ->hint('Select an existing student from the list.'),
+                    ])
+                    ->columns(1),
             ]);
     }
 
@@ -128,20 +139,21 @@ class UserResource extends Resource
                     ->date()
                     ->sortable()
                     ->searchable(),
-
             ])
             ->filters([
-                //
+                TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\RestoreAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-
+                Tables\Actions\ForceDeleteAction::make(), // Permanently delete users
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(), // Restore multiple users
                 ]),
             ])
             ->emptyStateActions([

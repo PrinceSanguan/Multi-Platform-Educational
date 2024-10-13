@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('modules', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade');
-            $table->string('archive');
-            $table->timestamps();
+        Schema::table('sections', function (Blueprint $table) {
+            $table->unsignedBigInteger('teacher_id')->constrained('users')->onDelete('cascade'); // Add teacher_id foreign key
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('modules');
+        Schema::table('sections', function (Blueprint $table) {
+            //
+        });
     }
 };

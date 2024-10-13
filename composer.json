@@ -28,7 +28,7 @@
         "rupadana/filament-announce": "^3.2",
         "swisnl/filament-backgrounds": "^1.1",
         "tomatophp/filament-media-manager": "^1.1",
-        "z3d0x/filament-logger": "^0.7.0"
+        "z3d0x/filament-logger": "^0.7.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.12",
