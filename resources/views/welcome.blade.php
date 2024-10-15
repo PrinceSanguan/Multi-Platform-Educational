@@ -98,8 +98,6 @@
         <div class="container px-4 mx-auto">
             <h2 class="mb-8 text-4xl font-semibold">About Us</h2>
             <p class="max-w-4xl mx-auto mb-8 text-lg">The interactive visual aid could include features such as gamification, simulations, and multimedia content to make learning more enjoyable and effective. The performance analysis component could provide teachers with valuable insights into student progress, helping them identify areas where students need extra support.</p>
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
-            </div>
         </div>
     </div>
 
