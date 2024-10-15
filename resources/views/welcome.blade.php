@@ -98,20 +98,7 @@
         <div class="container px-4 mx-auto">
             <h2 class="mb-8 text-4xl font-semibold">About Us</h2>
             <p class="max-w-4xl mx-auto mb-8 text-lg">The interactive visual aid could include features such as gamification, simulations, and multimedia content to make learning more enjoyable and effective. The performance analysis component could provide teachers with valuable insights into student progress, helping them identify areas where students need extra support.</p>
-            <a href="#" class="mb-8 text-lg btn-custom">Enroll Now</a>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
-                <div class="mb-4">
-                    <img src="/placeholder.svg?height=150&width=150" alt="Classroom 1" class="w-full h-auto rounded-lg">
-                </div>
-                <div class="mb-4">
-                    <img src="/placeholder.svg?height=150&width=150" alt="Classroom 2" class="w-full h-auto rounded-lg">
-                </div>
-                <div class="mb-4">
-                    <img src="/placeholder.svg?height=150&width=150" alt="Classroom 3" class="w-full h-auto rounded-lg">
-                </div>
-                <div class="mb-4">
-                    <img src="/placeholder.svg?height=150&width=150" alt="Classroom 4" class="w-full h-auto rounded-lg">
-                </div>
             </div>
         </div>
     </div>
@@ -142,8 +129,9 @@
                 <div>
                     <h3 class="mb-2 text-lg font-semibold">Contact Us</h3>
                     <p>📞 +632139432871</p>
-                    <p>✉️ prcschool@school.com.ph</p>
+                    <p>✉️ pfcschool@school.com.ph</p>
                     <p>📍 School Address</p>
+                    <p>Purok 1, Brgy. Kaybanban, <br> City of San Jose del Monte 3023 Bulacan</p>
                 </div>
             </div>
         </div>
