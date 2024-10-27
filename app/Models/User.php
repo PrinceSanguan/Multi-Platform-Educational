@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
@@ -82,6 +81,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->hasMany(Grade::class);
     }
+
     public function sections()
     {
         return $this->belongsToMany(Section::class, 'section_student', 'student_id', 'section_id');
@@ -91,6 +91,4 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->belongsTo(User::class, 'parent_id'); // Assuming 'parent_id' is the foreign key in the 'users' table
     }
-
-
 }

@@ -101,16 +101,16 @@
             <a href="#" class="mb-8 text-lg btn-custom">Enroll Now</a>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
                 <div class="mb-4">
-                    <img src="/placeholder.svg?height=150&width=150" alt="Classroom 1" class="w-full h-auto rounded-lg">
+                    <img src="{{ asset('storage/classroom.png') }}" class="w-full h-auto rounded-lg">
                 </div>
                 <div class="mb-4">
-                    <img src="/placeholder.svg?height=150&width=150" alt="Classroom 2" class="w-full h-auto rounded-lg">
+                    <img src="{{ asset('storage/classroom.png') }}" class="w-full h-auto rounded-lg">
                 </div>
                 <div class="mb-4">
-                    <img src="/placeholder.svg?height=150&width=150" alt="Classroom 3" class="w-full h-auto rounded-lg">
+                    <img src="{{ asset('storage/classroom.png') }}" class="w-full h-auto rounded-lg">
                 </div>
                 <div class="mb-4">
-                    <img src="/placeholder.svg?height=150&width=150" alt="Classroom 4" class="w-full h-auto rounded-lg">
+                    <img src="{{ asset('storage/classroom.png') }}" class="w-full h-auto rounded-lg">
                 </div>
             </div>
         </div>

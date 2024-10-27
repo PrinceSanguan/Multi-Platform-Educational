@@ -11,7 +11,6 @@ class Setting extends Model
 
     protected $fillable = ['key', 'value'];
 
-
     // Save a setting by key
 
 }
