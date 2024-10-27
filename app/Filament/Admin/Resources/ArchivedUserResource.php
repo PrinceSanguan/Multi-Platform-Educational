@@ -62,22 +62,21 @@ class ArchivedUserResource extends Resource
     {
         // dd(static::getModel()::onlyTrashed()->get());
         return $table
-
-        ->query(fn () => static::getModel()::onlyTrashed()) // Fetch only soft-deleted users
-        ->columns([
-            Tables\Columns\TextColumn::make('id')
-                ->sortable()
-                ->searchable(),
-            Tables\Columns\TextColumn::make('name')
-                ->sortable()
-                ->searchable(),
-            Tables\Columns\TextColumn::make('email')
-                ->sortable()
-                ->searchable(),
-            Tables\Columns\TextColumn::make('deleted_at')
-                ->label('Archived At')
-                ->date()
-                ->sortable(),
+            ->query(fn () => static::getModel()::onlyTrashed()) // Fetch only soft-deleted users
+            ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->label('Archived At')
+                    ->date()
+                    ->sortable(),
             ])
             ->filters([
                 TrashedFilter::make(), // Retain the TrashedFilter, but only soft-deleted users will show
@@ -85,17 +84,17 @@ class ArchivedUserResource extends Resource
             ->actions([
 
                 Tables\Actions\Action::make('restore')
-                ->label('Restore')
-                ->icon('heroicon-o-arrow-uturn-left')
-                ->color('success')
-                ->requiresConfirmation()
-                ->action(function ($record) {
-                    $record->restore(); // Restore the soft-deleted user
-                    Notification::make()
+                    ->label('Restore')
+                    ->icon('heroicon-o-arrow-uturn-left')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+                        $record->restore(); // Restore the soft-deleted user
+                        Notification::make()
                             ->title('User restored successfully.')
                             ->success()
                             ->send();
-                }),
+                    }),
                 Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([

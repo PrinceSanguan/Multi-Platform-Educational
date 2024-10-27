@@ -31,6 +31,9 @@ class FolderPolicy
      */
     public function create(User $user): bool
     {
+        if ($user->hasRole('student')) {
+            return false;
+        }
         return $user->can('create_folder');
     }
 
