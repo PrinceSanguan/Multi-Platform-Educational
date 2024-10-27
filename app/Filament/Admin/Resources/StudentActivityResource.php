@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Notifications\Notification;
 
 class StudentActivityResource extends Resource
 {
@@ -27,13 +28,16 @@ class StudentActivityResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                Textarea::make('description'),
-                FileUpload::make('image_path') // Add the image upload field
+                TextInput::make('name')
+                    ->required()
+                    ->label('Activity Name'),
+                Textarea::make('description')
+                    ->label('Description'),
+                FileUpload::make('image_path')
                     ->label('Activity Image')
                     ->image()
                     ->directory('student-activities')
-                    ->required(), // Optionally make it required
+                    ->required(),
                 Select::make('status')
                     ->options([
                         'visible' => 'Visible',
@@ -48,11 +52,12 @@ class StudentActivityResource extends Resource
                 Select::make('students')
                     ->label('Assign Students')
                     ->multiple()
-                    ->relationship('students', 'name')
                     ->preload()
                     ->searchable()
-                    ->getSearchResultsUsing(fn (string $search) => User::role('student')->where('name', 'like', "%{$search}%")->pluck('name', 'id'))
-                    ->options(User::role('student')->pluck('name', 'id')),
+                    ->options(User::role('student')->pluck('name', 'id'))
+                    ->getSearchResultsUsing(fn (string $search) => User::role('student')
+                        ->where('name', 'like', "%{$search}%")
+                        ->pluck('name', 'id')),
             ]);
     }
 
@@ -62,7 +67,7 @@ class StudentActivityResource extends Resource
             ->columns([
                 TextColumn::make('name')->sortable(),
                 TextColumn::make('status')->sortable(),
-                TextColumn::make('section.name') // Display section name
+                TextColumn::make('section.name')
                     ->label('Section')
                     ->sortable(),
                 TextColumn::make('created_at')->dateTime(),
@@ -74,6 +79,11 @@ class StudentActivityResource extends Resource
                     ->action(function (StudentActivity $record) {
                         $record->status = $record->status === 'visible' ? 'hidden' : 'visible';
                         $record->save();
+                        Notification::make()
+                            ->title('Status Updated')
+                            ->success()
+                            ->body("The activity has been " . ($record->status === 'visible' ? 'made visible' : 'hidden') . ".")
+                            ->send();
                     })
                     ->requiresConfirmation()
                     ->color(fn (StudentActivity $record): string => $record->status === 'visible' ? 'danger' : 'success'),
