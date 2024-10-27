@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\StudentActivity;
 use App\Models\User;
+use App\Models\StudentActivity;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StudentActivityPolicy
@@ -15,7 +15,7 @@ class StudentActivityPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_student::activity');
+        return $user->can('{{ ViewAny }}');
     }
 
     /**
