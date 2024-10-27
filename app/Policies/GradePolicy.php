@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Grade;
 use App\Models\User;
+use App\Models\Grade;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class GradePolicy
@@ -15,7 +15,7 @@ class GradePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_grade');
+        return $user->can('{{ ViewAny }}');
     }
 
     /**

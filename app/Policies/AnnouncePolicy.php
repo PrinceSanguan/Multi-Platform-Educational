@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Announce;
 use App\Models\User;
+use App\Models\Announce;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AnnouncePolicy
@@ -15,7 +15,7 @@ class AnnouncePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_announce');
+        return $user->can('{{ ViewAny }}');
     }
 
     /**

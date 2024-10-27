@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Subject;
 use App\Models\User;
+use App\Models\Subject;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SubjectPolicy
@@ -15,7 +15,7 @@ class SubjectPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_subject');
+        return $user->can('{{ ViewAny }}');
     }
 
     /**
