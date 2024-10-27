@@ -12,7 +12,9 @@ class SectionProgress extends Page
     use HasPageShield;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
     protected static ?string $navigationGroup = 'Teachers';
+
     protected static string $view = 'filament.admin.pages.section-progress';
 
     public function getSectionData()

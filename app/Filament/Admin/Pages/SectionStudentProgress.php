@@ -13,6 +13,7 @@ class SectionStudentProgress extends Page
     use HasPageShield;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
     protected static string $view = 'filament.admin.pages.section-student-progress';
 
     public $selectedSectionId = null;
@@ -49,7 +50,7 @@ class SectionStudentProgress extends Page
         // Fetch section with students and their grades
         $section = Section::with('students.grades')->find($this->selectedSectionId);
 
-        if (!$section) {
+        if (! $section) {
             return [
                 'labels' => [],
                 'averages' => [],

@@ -5,7 +5,7 @@ return [
         'title' => "No Media or Folders Found",
     ],
     'folders' => [
-        'title' => 'Archive',
+        'title' => 'Media',
         'single' => 'Folder',
         'columns' => [
             'name' => 'Name',

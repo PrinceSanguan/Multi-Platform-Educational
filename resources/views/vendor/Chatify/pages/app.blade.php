@@ -15,10 +15,10 @@
             {{-- Search input --}}
             <input type="text" class="messenger-search" placeholder="Search" />
             {{-- Tabs --}}
-            {{-- <div class="messenger-listView-tabs">
+            <div class="messenger-listView-tabs">
                 <a href="#" class="active-tab" data-view="users">
                     <span class="far fa-user"></span> Contacts</a>
-            </div> --}}
+            </div>
         </div>
         {{-- tabs and lists --}}
         <div class="m-body contacts-container">
@@ -63,7 +63,7 @@
                 {{-- header buttons --}}
                 <nav class="m-header-right">
                     <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
-                    <a href="/"><i class="fas fa-home"></i></a>
+                    <a href="/admin"><i class="fas fa-home"></i></a>
                     <a href="#" class="show-infoSide"><i class="fas fa-info-circle"></i></a>
                 </nav>
             </nav>

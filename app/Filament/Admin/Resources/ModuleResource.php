@@ -4,7 +4,6 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ModuleResource\Pages;
 use App\Models\Module;
-use App\Models\Section;
 use App\Models\User;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MultiSelect;
@@ -30,35 +29,35 @@ class ModuleResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                ->required(),
+                    ->required(),
 
-            FileUpload::make('archive')
-                ->downloadable()
-                // ->enablePreview() // Uncomment if you want to enable preview
-                ->label('Module File'),
+                FileUpload::make('archive')
+                    ->downloadable()
+                    // ->enablePreview() // Uncomment if you want to enable preview
+                    ->label('Module File'),
 
-            MultiSelect::make('sections')
-                ->relationship('sections', 'name') // Load sections
-                ->reactive() // Makes the field reactive
-                ->afterStateUpdated(function ($state, callable $set) {
-                    // When sections are selected, update the student names text input
-                    $students = User::whereHas('sections', function($query) use ($state) {
-                        $query->whereIn('sections.id', $state); // Get students assigned to selected sections
-                    })->get();
+                MultiSelect::make('sections')
+                    ->relationship('sections', 'name') // Load sections
+                    ->reactive() // Makes the field reactive
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        // When sections are selected, update the student names text input
+                        $students = User::whereHas('sections', function ($query) use ($state) {
+                            $query->whereIn('sections.id', $state); // Get students assigned to selected sections
+                        })->get();
 
-                    // Get the names of the students
-                    $studentNames = $students->pluck('name')->implode(', ');
+                        // Get the names of the students
+                        $studentNames = $students->pluck('name')->implode(', ');
 
-                    // Set the student names in the text input
-                    $set('student_names', $studentNames);
-                })
-                ->label('Assign Sections'),
+                        // Set the student names in the text input
+                        $set('student_names', $studentNames);
+                    })
+                    ->label('Assign Sections'),
 
-            TextInput::make('student_names')
-                ->label('Assigned Students')
-                ->disabled() // Disable editing since this is auto-populated
-                ->reactive(), // Optional: Make it reactive if you want to trigger updates
-        ]);
+                TextInput::make('student_names')
+                    ->label('Assigned Students')
+                    ->disabled() // Disable editing since this is auto-populated
+                    ->reactive(), // Optional: Make it reactive if you want to trigger updates
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -71,9 +70,8 @@ class ModuleResource extends Resource
                 IconColumn::make('archive') // New column for PDF download
                     ->label('Download PDF')
                     ->boolean() // Optional: makes it toggleable
-                     ->trueIcon('heroicon-o-document') // Icon for the PDF
-                    ->action(fn (Module $record) =>
-                        Response::download($record->archive) // Adjust the path as necessary
+                    ->trueIcon('heroicon-o-document') // Icon for the PDF
+                    ->action(fn (Module $record) => Response::download($record->archive) // Adjust the path as necessary
                     )
                     ->color('success'), // Optional: Set color for the icon
             ])

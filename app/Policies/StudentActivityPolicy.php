@@ -15,7 +15,7 @@ class StudentActivityPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_student::activity');
+        return $user->can('{{ ViewAny }}');
     }
 
     /**

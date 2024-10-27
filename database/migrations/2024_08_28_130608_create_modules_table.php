@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade');
             $table->string('archive');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -25,6 +25,7 @@
         "livewire/livewire": "^3.0",
         "munafio/chatify": "^1.6",
         "njxqlus/filament-progressbar": "^1.0",
+        "rawilk/filament-password-input": "^2.0",
         "rupadana/filament-announce": "^3.2",
         "swisnl/filament-backgrounds": "^1.1",
         "tomatophp/filament-media-manager": "^1.1",

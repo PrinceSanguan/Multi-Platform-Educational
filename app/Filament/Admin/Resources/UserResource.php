@@ -4,17 +4,16 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Models\User;
-use Filament\Actions\RestoreAction;
 use Filament\Forms;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends Resource
 {
@@ -74,14 +73,14 @@ class UserResource extends Resource
                         Toggle::make('is_active')
                             ->label('Active')
                             ->inline(false),
-                        Forms\Components\TextInput::make('password')
+                        Password::make('password')
                             ->password()
                             ->confirmed()
                             ->columnSpan(1)
                             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create'),
-                        Forms\Components\TextInput::make('password_confirmation')
+                        Password::make('password_confirmation')
                             ->required(fn (string $context): bool => $context === 'create')
                             ->columnSpan(1)
                             ->password(),
@@ -104,7 +103,7 @@ class UserResource extends Resource
                             ->options(User::role('student')->pluck('name', 'id')) // Querying users with 'student' role
                             ->searchable()
                             ->nullable() // Allow no student to be selected
-                            ->hint('Select an existing student from the list.'),
+                            ->hint('Select an existing student from the list Maximum of 5 Students.'),
                     ])
                     ->columns(1),
             ]);

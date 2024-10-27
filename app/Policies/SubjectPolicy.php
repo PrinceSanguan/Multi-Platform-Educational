@@ -15,7 +15,7 @@ class SubjectPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_subject');
+        return $user->can('{{ ViewAny }}');
     }
 
     /**

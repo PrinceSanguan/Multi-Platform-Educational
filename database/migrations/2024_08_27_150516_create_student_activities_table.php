@@ -18,8 +18,8 @@ return new class extends Migration
             $table->enum('type', ['activity', 'quiz', 'seatwork']); // Added type column
             $table->string('status')->default('visible');
             $table->string('image_path')->nullable();
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('section_id')->constrained()->onDelete('cascade'); // Optional: If you want to assign activities to sections
+            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade')->nullable();
+            $table->unsignedBigInteger('section_id')->constrained()->onDelete('cascade')->nullable();// Optional: If you want to assign activities to sections
             $table->timestamps();
         });
     }
