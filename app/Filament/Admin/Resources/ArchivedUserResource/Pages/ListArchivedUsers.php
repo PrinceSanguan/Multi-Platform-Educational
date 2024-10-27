@@ -16,5 +16,4 @@ class ListArchivedUsers extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-
 }

@@ -8,8 +8,8 @@ use App\Policies\MediaPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use TomatoPHP\FilamentMediaManager\Models\Folder;
+use TomatoPHP\FilamentMediaManager\Models\Media;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +29,5 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Activity::class, ActivityPolicy::class);
         Gate::policy(Media::class, MediaPolicy::class);
         Gate::policy(Folder::class, FolderPolicy::class);
-
     }
 }
