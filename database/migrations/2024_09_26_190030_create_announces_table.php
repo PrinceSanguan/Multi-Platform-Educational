@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('announces', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('body');
-            $table->string('image');
+            $table->text('body');
+            $table->string('image')->nullable();
+            $table->date('start_date');  // Add start date
+            $table->date('end_date');    // Add end date
             $table->timestamps();
         });
     }

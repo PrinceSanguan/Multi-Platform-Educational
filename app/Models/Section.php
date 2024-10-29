@@ -9,14 +9,14 @@ class Section extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $guarded = [];
 
     /**
      * The students that belong to this section.
      */
     public function students()
     {
-        return $this->belongsToMany(User::class, 'section_user', 'section_id', 'user_id')
+        return $this->belongsToMany(User::class, 'section_student', 'section_id', 'student_id')
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'student');
             });
