@@ -3,8 +3,8 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use TomatoPHP\FilamentMediaManager\Models\Folder;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FolderPolicy
 {
@@ -15,7 +15,7 @@ class FolderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_folder');
+        return $user->can('{{ ViewAny }}');
     }
 
     /**
@@ -31,6 +31,9 @@ class FolderPolicy
      */
     public function create(User $user): bool
     {
+        if ($user->hasRole('student')) {
+            return false;
+        }
         return $user->can('create_folder');
     }
 

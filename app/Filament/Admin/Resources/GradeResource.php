@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class GradeResource extends Resource
 {
@@ -25,45 +26,48 @@ class GradeResource extends Resource
 
     public static function form(Form $form): Form
     {
+        // Get the authenticated user
+        $user = Auth::user();
+
         return $form
             ->schema([
+                // Select student where the role is 'student'
                 Select::make('user_id')
                     ->label('Student')
                     ->options(User::whereHas('roles', function ($query) {
-                        $query->where('name', 'student'); // Assumes Spatie Roles package
+                        $query->where('name', 'student');
                     })->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
 
+                // Filter section by teacher (authenticated user)
                 Select::make('section_id')
                     ->label('Section')
-                    ->options(Section::all()->pluck('name', 'id'))
+                    ->options(Section::where('teacher_id', $user->id)->pluck('name', 'id')) // Filter by teacher_id
                     ->searchable()
                     ->required(),
 
+                // Select subject
                 Select::make('subject_id')
                     ->label('Subject')
                     ->options(Subject::all()->pluck('name', 'id')) // Assuming you have a subjects table
                     ->searchable()
                     ->required(),
 
+                // Quarter grades
                 TextInput::make('first_quarter')
                     ->numeric()
                     ->label('First Quarter'),
-
                 TextInput::make('second_quarter')
                     ->numeric()
                     ->label('Second Quarter'),
-
                 TextInput::make('third_quarter')
                     ->numeric()
                     ->label('Third Quarter'),
-
                 TextInput::make('fourth_quarter')
                     ->numeric()
                     ->label('Fourth Quarter'),
             ]);
-
     }
 
     public static function table(Table $table): Table

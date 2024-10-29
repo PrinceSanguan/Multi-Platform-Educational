@@ -45,7 +45,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
-                \Awcodes\Overlook\Widgets\OverlookWidget::class,
+                // \Awcodes\Overlook\Widgets\OverlookWidget::class,
                 StudentGradeChart::class,
             ])
             ->plugins([
@@ -56,8 +56,8 @@ class AdminPanelProvider extends PanelProvider
                         hasAvatars: true,
                         slug: 'profile'
                     ),
-                \TomatoPHP\FilamentMediaManager\FilamentMediaManagerPlugin::make(),
-
+                \TomatoPHP\FilamentMediaManager\FilamentMediaManagerPlugin::make()
+                ->allowUserAccess(),
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
                     ->gridColumns([
                         'default' => 1,
@@ -72,7 +72,7 @@ class AdminPanelProvider extends PanelProvider
                     ]),
 
                 \Hasnayeen\Themes\ThemesPlugin::make(),
-                 FilamentApexChartsPlugin::make(),
+                FilamentApexChartsPlugin::make(),
 
                 \Awcodes\LightSwitch\LightSwitchPlugin::make()
                     ->position(\Awcodes\LightSwitch\Enums\Alignment::BottomCenter)
@@ -97,7 +97,7 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-cog-8-tooth'),
             ])
             ->resources([
-                config('filament-logger.activity_resource'),
+                // config('filament-logger.activity_resource'),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->middleware([

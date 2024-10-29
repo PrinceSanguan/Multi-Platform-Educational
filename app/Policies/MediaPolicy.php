@@ -15,6 +15,8 @@ class MediaPolicy
      */
     public function viewAny(User $user): bool
     {
+
+
         return $user->can('view_any_media');
     }
 
@@ -31,6 +33,9 @@ class MediaPolicy
      */
     public function create(User $user): bool
     {
+        if ($user->hasRole('student')) {
+            return false;
+        }
         return $user->can('create_media');
     }
 

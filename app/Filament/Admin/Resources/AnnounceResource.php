@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder; // Use the correct Builder here
 use Illuminate\Support\Facades\Blade;
 
 class AnnounceResource extends Resource
@@ -21,7 +22,6 @@ class AnnounceResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-
             ->schema([
                 Forms\Components\Section::make('Announcement Details')
                     ->schema([
@@ -51,6 +51,13 @@ class AnnounceResource extends Resource
                         View::make('components.enlarge-image')->viewData([
                             'record' => fn () => $form->getRecord(),
                         ]),
+                        Forms\Components\DatePicker::make('start_date')
+                            ->label('Start Date')
+                            ->required(),
+
+                        Forms\Components\DatePicker::make('end_date')
+                            ->label('End Date')
+                            ->required(),
                     ])
                     ->columns(1),
             ]);
@@ -67,7 +74,17 @@ class AnnounceResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('date_range')
+                    ->form([
+                        Forms\Components\DatePicker::make('start_date')->label('From'),
+                        Forms\Components\DatePicker::make('end_date')->label('To'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        // Using Illuminate\Database\Eloquent\Builder for the query
+                        return $query
+                            ->when($data['start_date'], fn (Builder $query, $date) => $query->where('created_at', '>=', $date))
+                            ->when($data['end_date'], fn (Builder $query, $date) => $query->where('created_at', '<=', $date));
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

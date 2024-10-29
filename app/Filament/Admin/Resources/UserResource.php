@@ -9,9 +9,11 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends Resource
 {
@@ -47,7 +49,6 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-
                 Forms\Components\Grid::make(2)
                     ->schema([
                         Forms\Components\TextInput::make('name')
@@ -69,18 +70,17 @@ class UserResource extends Resource
                             ->prefixIcon('heroicon-m-envelope')
                             ->columnSpan('full')
                             ->email(),
-
                         Toggle::make('is_active')
                             ->label('Active')
                             ->inline(false),
-                        Forms\Components\TextInput::make('password')
+                        Password::make('password')
                             ->password()
                             ->confirmed()
                             ->columnSpan(1)
                             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create'),
-                        Forms\Components\TextInput::make('password_confirmation')
+                        Password::make('password_confirmation')
                             ->required(fn (string $context): bool => $context === 'create')
                             ->columnSpan(1)
                             ->password(),
@@ -96,6 +96,16 @@ class UserResource extends Resource
                     ])
                     ->columns(1),
 
+                Forms\Components\Section::make('Assign Existing Student')
+                    ->schema([
+                        Forms\Components\Select::make('student_id')
+                            ->label('Select Student')
+                            ->options(User::role('student')->pluck('name', 'id')) // Querying users with 'student' role
+                            ->searchable()
+                            ->nullable() // Allow no student to be selected
+                            ->hint('Select an existing student from the list Maximum of 5 Students.'),
+                    ])
+                    ->columns(1),
             ]);
     }
 
@@ -128,20 +138,21 @@ class UserResource extends Resource
                     ->date()
                     ->sortable()
                     ->searchable(),
-
             ])
             ->filters([
-                //
+                TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\RestoreAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-
+                Tables\Actions\ForceDeleteAction::make(), // Permanently delete users
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(), // Restore multiple users
                 ]),
             ])
             ->emptyStateActions([

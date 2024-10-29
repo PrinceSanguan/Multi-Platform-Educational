@@ -3,10 +3,14 @@
 namespace App\Filament\Admin\Pages;
 
 use App\Models\Section;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 
 class SectionProgress extends Page
 {
+    use HasPageShield;
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Teachers';
@@ -15,8 +19,13 @@ class SectionProgress extends Page
 
     public function getSectionData()
     {
-        // Fetch sections along with the students' grades
-        $sections = Section::with('students.grades')->get();
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Check if the user is a teacher and fetch sections assigned to them
+        $sections = Section::with('students.grades')
+            ->where('teacher_id', $user->id) // Assuming 'teacher_id' exists in the sections table
+            ->get();
 
         $chartData = [
             'labels' => [],
