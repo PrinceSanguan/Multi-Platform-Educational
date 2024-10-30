@@ -5,15 +5,17 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
+use Rawilk\FilamentPasswordInput\Password;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
-use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends Resource
 {
@@ -141,6 +143,22 @@ class UserResource extends Resource
             ])
             ->filters([
                 TrashedFilter::make(),
+                SelectFilter::make('role')
+                    ->label('Role')
+                    ->options([
+                        'student' => 'Student',
+                        'teacher' => 'Teacher',
+                        'parent' => 'Parent',
+                        'super_admin' => 'Super Admin',
+                    ])
+                    ->query(function (Builder $query, $state) {
+                        // Use $state instead of $role to access the selected value
+                        if ($state) {
+                            $query->whereHas('roles', function (Builder $query) use ($state) {
+                                $query->where('name', $state);
+                            });
+                        }
+                    }),
             ])
             ->actions([
                 Tables\Actions\RestoreAction::make(),

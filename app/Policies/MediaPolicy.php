@@ -3,8 +3,8 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use TomatoPHP\FilamentMediaManager\Models\Media;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MediaPolicy
 {
@@ -15,8 +15,6 @@ class MediaPolicy
      */
     public function viewAny(User $user): bool
     {
-
-
         return $user->can('view_any_media');
     }
 
@@ -33,9 +31,6 @@ class MediaPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->hasRole('student')) {
-            return false;
-        }
         return $user->can('create_media');
     }
 
