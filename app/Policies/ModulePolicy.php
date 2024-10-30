@@ -15,7 +15,7 @@ class ModulePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('{{ ViewAny }}');
+        return $user->can('view_any_module');
     }
 
     /**
