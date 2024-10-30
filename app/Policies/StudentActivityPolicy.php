@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\StudentActivity;
 use App\Models\User;
+use App\Models\StudentActivity;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StudentActivityPolicy

@@ -6,7 +6,7 @@ return [
         'slug' => 'shield/roles',
         'navigation_sort' => -1,
         'navigation_badge' => true,
-        'navigation_group' => true,
+        'navigation_group' => 'Administration', // Set to a specific group name
         'is_globally_searchable' => false,
         'show_model_path' => true,
     ],
@@ -19,7 +19,7 @@ return [
         'enabled' => true,
         'name' => 'super_admin',
         'define_via_gate' => false,
-        'intercept_gate' => 'before', // after
+        'intercept_gate' => 'before', // Check permissions before other gates
     ],
 
     'filament_user' => [
@@ -30,13 +30,12 @@ return [
     'permission_prefixes' => [
         'resource' => [
             'view',
-            // 'view_any',
+            'view_any', 
             'create',
             'update',
             'delete',
             'delete_any',
         ],
-
         'page' => 'page',
         'widget' => 'widget',
     ],
@@ -54,21 +53,18 @@ return [
 
     'exclude' => [
         'enabled' => true,
-
         'pages' => [
             'Dashboard',
             'MyProfilePage',
         ],
-
         'widgets' => [
-            'AccountWidget', 'FilamentInfoWidget',
+            'AccountWidget', 
+            'FilamentInfoWidget',
         ],
-
-        'resources' => [],
+        'resources' => [], // No resources excluded
     ],
 
     'register_role_policy' => [
         'enabled' => true,
     ],
-
 ];
