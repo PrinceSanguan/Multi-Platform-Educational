@@ -5,12 +5,12 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\AnnounceResource\Pages;
 use App\Models\Announce;
 use Filament\Forms;
-use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder; // Use the correct Builder here
 use Illuminate\Support\Facades\Blade;
 
 class AnnounceResource extends Resource
@@ -22,7 +22,6 @@ class AnnounceResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-
             ->schema([
                 Forms\Components\Section::make('Announcement Details')
                     ->schema([
@@ -81,6 +80,7 @@ class AnnounceResource extends Resource
                         Forms\Components\DatePicker::make('end_date')->label('To'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
+                        // Using Illuminate\Database\Eloquent\Builder for the query
                         return $query
                             ->when($data['start_date'], fn (Builder $query, $date) => $query->where('created_at', '>=', $date))
                             ->when($data['end_date'], fn (Builder $query, $date) => $query->where('created_at', '<=', $date));

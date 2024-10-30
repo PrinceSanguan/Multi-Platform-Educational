@@ -5,10 +5,12 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Rawilk\FilamentPasswordInput\Password;
 use Filament\Tables\Table;
@@ -73,14 +75,14 @@ class UserResource extends Resource
                         Toggle::make('is_active')
                             ->label('Active')
                             ->inline(false),
-                            Password::make('password')
+                        Password::make('password')
                             ->password()
                             ->confirmed()
                             ->columnSpan(1)
                             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create'),
-                            Password::make('password_confirmation')
+                        Password::make('password_confirmation')
                             ->required(fn (string $context): bool => $context === 'create')
                             ->columnSpan(1)
                             ->password(),
@@ -141,6 +143,22 @@ class UserResource extends Resource
             ])
             ->filters([
                 TrashedFilter::make(),
+                SelectFilter::make('role')
+                    ->label('Role')
+                    ->options([
+                        'student' => 'Student',
+                        'teacher' => 'Teacher',
+                        'parent' => 'Parent',
+                        'super_admin' => 'Super Admin',
+                    ])
+                    ->query(function (Builder $query, $state) {
+                        // Retrieve selected role from the state
+                        if ($state) {
+                            $query->whereHas('roles', function (Builder $query) use ($state) {
+                                $query->where('name', $state);
+                            });
+                        }
+                    }),
             ])
             ->actions([
                 Tables\Actions\RestoreAction::make(),

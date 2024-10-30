@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('group');
-            $table->timestamps();
+        Schema::table('sections', function (Blueprint $table) {
+            $table->foreignId('teacher_id')->default(1)->change(); // Set the desired default ID here
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::table('sections', function (Blueprint $table) {
+            $table->foreignId('teacher_id')->default(null)->change();
+        });
     }
 };
