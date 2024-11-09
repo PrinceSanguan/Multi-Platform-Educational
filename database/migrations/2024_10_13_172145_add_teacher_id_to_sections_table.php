@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sections', function (Blueprint $table) {
-            $table->unsignedBigInteger('teacher_id')->constrained('users')->onDelete('cascade'); // Add teacher_id foreign key
+            $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade')->nullable(); // Add teacher_id foreign key
         });
     }
 

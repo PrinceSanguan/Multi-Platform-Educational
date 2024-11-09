@@ -3,7 +3,8 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ArchivedModuleResource\Pages;
-use App\Models\Module;
+use App\Models\ArchMod;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\TextInput;
@@ -18,9 +19,9 @@ use Illuminate\Support\Facades\Response;
 
 class ArchivedModuleResource extends Resource
 {
-    protected static ?string $model = Module::class;
+    protected static ?string $model = ArchMod::class;
 
-    protected static ?string $navigationGroup = 'Teachers';
+    protected static ?string $navigationGroup = 'Modules';
 
     protected static ?string $navigationLabel = 'Archived Modules';
 
@@ -63,7 +64,7 @@ class ArchivedModuleResource extends Resource
                     ->label('Download PDF')
                     ->boolean()
                     ->trueIcon('heroicon-o-document')
-                    ->action(fn (Module $record) => Response::download($record->archive))
+                    ->action(fn (ArchMod $record) => Response::download($record->archive)) // Changed from Module to ArchMod
                     ->color('success'),
                 TextColumn::make('deleted_at')
                     ->label('Archived At')
@@ -71,7 +72,7 @@ class ArchivedModuleResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()->default(true),
+                // Tables\Filters\TrashedFilter::make()->default(true),
             ])
             ->actions([
                 Tables\Actions\Action::make('restore')
@@ -79,7 +80,7 @@ class ArchivedModuleResource extends Resource
                     ->icon('heroicon-o-arrow-uturn-left')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->action(function (Module $record) {
+                    ->action(function (ArchMod $record) { // Changed from Module to ArchMod
                         $record->restore();
                         Notification::make()
                             ->title('Module restored successfully.')
@@ -100,5 +101,26 @@ class ArchivedModuleResource extends Resource
         return [
             'index' => Pages\ListArchivedModules::route('/'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        $user = Filament::auth()->user();
+
+        // Hide from navigation for users with the 'student' or 'parent' role
+        if ($user->hasRole('student') || $user->hasRole('parent')) {
+            return false;
+        }
+
+        // Otherwise, defer to the parent method for other roles
+        return parent::canViewAny();
+    }
+
+    public static function canViewForNavigation(): bool
+    {
+        $user = Filament::auth()->user();
+
+        // Hide from navigation for users with the 'student' role
+        return ! $user->hasRole('student');
     }
 }

@@ -15,7 +15,7 @@ use TomatoPHP\FilamentMediaManager\Traits\InteractsWithMediaFolders;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
-    use HasFactory, HasRoles, Notifiable, SoftDeletes, InteractsWithMediaFolders;
+    use HasFactory, HasRoles, InteractsWithMediaFolders, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -68,6 +68,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->is_active;
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
     /**
      * Get all of the comments for the User
      *
@@ -83,11 +88,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasMany(Grade::class);
     }
 
-    public function sections()
+    public function section()
     {
-        return $this->belongsToMany(Section::class, 'section_student', 'student_id', 'section_id');
+        return $this->hasOne(Section::class, 'user_id');
     }
-
     public function parent()
     {
         return $this->belongsTo(User::class, 'parent_id'); // Assuming 'parent_id' is the foreign key in the 'users' table

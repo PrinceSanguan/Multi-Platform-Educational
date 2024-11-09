@@ -79,7 +79,7 @@ class ArchivedUserResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                TrashedFilter::make(), // Retain the TrashedFilter, but only soft-deleted users will show
+                // TrashedFilter::make(), // Retain the TrashedFilter, but only soft-deleted users will show
             ])
             ->actions([
 

@@ -23,6 +23,7 @@
         "laravel/tinker": "^2.9",
         "leandrocfe/filament-apex-charts": "^3.1",
         "livewire/livewire": "^3.0",
+        "maatwebsite/excel": "^3.1",
         "munafio/chatify": "^1.6",
         "njxqlus/filament-progressbar": "^1.0",
         "rawilk/filament-password-input": "^2.0",

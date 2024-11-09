@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('student_activity_user', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('activity_id')->constrained('student_activities')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
+        $table->foreignId('activity_id')->constrained('student_activities')->onDelete('cascade');
+        $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+        $table->timestamps(); // This adds the created_at and updated_at columns
         });
     }
 

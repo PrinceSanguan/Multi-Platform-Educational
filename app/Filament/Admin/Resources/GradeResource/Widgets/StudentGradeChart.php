@@ -4,10 +4,18 @@ namespace App\Filament\Admin\Resources\GradeResource\Widgets;
 
 use App\Models\Grade;
 use App\Models\Section;
+use Filament\Facades\Filament;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class StudentGradeChart extends ApexChartWidget
 {
+    public static function canView(): bool
+    {
+        $user = Filament::auth()->user();
+
+        return $user->hasAnyRole(['super_admin', 'admin', 'teacher']);
+    }
+
     /**
      * Chart Id
      */

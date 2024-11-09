@@ -3,19 +3,20 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
+use App\Filament\Imports\UserImporter;
 use App\Models\User;
 use Filament\Forms;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TrashedFilter;
-use Rawilk\FilamentPasswordInput\Password;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends Resource
 {
@@ -115,6 +116,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+
                 Tables\Columns\TextColumn::make('id')
                     ->sortable()
                     ->searchable(),
@@ -142,25 +144,34 @@ class UserResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                TrashedFilter::make(),
                 SelectFilter::make('role')
                     ->label('Role')
                     ->options([
                         'student' => 'Student',
                         'teacher' => 'Teacher',
                         'parent' => 'Parent',
+                        'admin' => 'Admin',
                         'super_admin' => 'Super Admin',
                     ])
                     ->query(function (Builder $query, $state) {
-                        // Use $state instead of $role to access the selected value
-                        if ($state) {
+                        // Only filter by role if a specific role is selected (not empty)
+                        if (! empty($state)) {
                             $query->whereHas('roles', function (Builder $query) use ($state) {
                                 $query->where('name', $state);
                             });
+
                         }
+
                     }),
             ])
+            ->headerActions([
+                //         ImportAction::make('Import')
+                // ->importer(UserImporter::class),
+
+            ])
             ->actions([
+                // ImportAction::make('Import')
+                // ->importer(UserImporter::class),
                 Tables\Actions\RestoreAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -170,7 +181,11 @@ class UserResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(), // Restore multiple users
+                    Tables\Actions\RestoreBulkAction::make(),
+
+                    // Restore multiple users
+                    //  ImportAction::make('Import')
+                    // ->importer(UserImporter::class),
                 ]),
             ])
             ->emptyStateActions([

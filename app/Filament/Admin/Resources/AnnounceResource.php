@@ -19,6 +19,8 @@ class AnnounceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $pluralModelLabel = 'Announcement';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -42,6 +44,7 @@ class AnnounceResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('image')
                             ->label('Announcement Image')
+                            // ->disk('public')
                             ->required()
                             ->image()
                             ->directory('announcements/images')

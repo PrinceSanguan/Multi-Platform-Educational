@@ -43,7 +43,7 @@ class GradeResource extends Resource
                 // Filter section by teacher (authenticated user)
                 Select::make('section_id')
                     ->label('Section')
-                    ->options(Section::where('teacher_id', $user->id)->pluck('name', 'id')) // Filter by teacher_id
+                    ->options(Section::all()->pluck('name', 'id')) // Assuming you have a subjects table
                     ->searchable()
                     ->required(),
 
