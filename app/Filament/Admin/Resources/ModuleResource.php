@@ -10,20 +10,23 @@ use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Hidden;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ModuleResource extends Resource
 {
     protected static ?string $model = Module::class;
 
-    protected static ?string $navigationGroup = 'Teachers';
+    protected static ?string $navigationGroup = 'Modules';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -32,31 +35,33 @@ class ModuleResource extends Resource
                     ->required(),
 
                 FileUpload::make('archive')
+                    ->disk('public') // Ensure the file is stored on the public disk
+                    ->directory('modules') // Save files in the modules directory within the public disk
                     ->downloadable()
-                    // ->enablePreview() // Uncomment if you want to enable preview
                     ->label('Module File'),
 
                 MultiSelect::make('sections')
-                    ->relationship('sections', 'name') // Load sections
-                    ->reactive() // Makes the field reactive
+                    ->relationship('sections', 'name')
+                    ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
-                        // When sections are selected, update the student names text input
+                        // Fetch users linked to selected sections
                         $students = User::whereHas('sections', function ($query) use ($state) {
-                            $query->whereIn('sections.id', $state); // Get students assigned to selected sections
+                            $query->whereIn('sections.id', $state);
                         })->get();
 
-                        // Get the names of the students
+                        // Get the student names and populate the 'student_names' field
                         $studentNames = $students->pluck('name')->implode(', ');
-
-                        // Set the student names in the text input
                         $set('student_names', $studentNames);
                     })
                     ->label('Assign Sections'),
 
                 TextInput::make('student_names')
                     ->label('Assigned Students')
-                    ->disabled() // Disable editing since this is auto-populated
-                    ->reactive(), // Optional: Make it reactive if you want to trigger updates
+                    ->disabled()
+                    ->reactive(),
+
+                Hidden::make('user_id')
+                    ->default(Auth::id()), // Automatically set the user ID
             ]);
     }
 
@@ -65,9 +70,14 @@ class ModuleResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name'),
-                // TextColumn::make('archive'),
-                TextColumn::make('sections.name'), //this will display sections associated with the module
-                IconColumn::make('archive') // New column for PDF download
+
+                TextColumn::make('sections.name')
+                    ->label('Sections')
+                    ->sortable()
+                    ->wrap(),
+
+                // Direct download icon for files on the public disk
+           IconColumn::make('archive') // New column for PDF download
                     ->label('Download PDF')
                     ->boolean() // Optional: makes it toggleable
                     ->trueIcon('heroicon-o-document') // Icon for the PDF
@@ -76,7 +86,7 @@ class ModuleResource extends Resource
                     ->color('success'), // Optional: Set color for the icon
             ])
             ->filters([
-
+                // Define any filters if necessary
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

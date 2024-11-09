@@ -19,10 +19,12 @@
         "hasnayeen/themes": "^3.0",
         "jeffgreco13/filament-breezy": "^2.3",
         "joshembling/image-optimizer": "^1.4",
+        "konnco/filament-import": "^2.0",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "leandrocfe/filament-apex-charts": "^3.1",
         "livewire/livewire": "^3.0",
+        "maatwebsite/excel": "^3.1",
         "munafio/chatify": "^1.6",
         "njxqlus/filament-progressbar": "^1.0",
         "rawilk/filament-password-input": "^2.0",
@@ -88,6 +90,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "beta",
     "prefer-stable": true
 }

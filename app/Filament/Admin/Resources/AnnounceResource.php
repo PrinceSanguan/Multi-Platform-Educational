@@ -7,6 +7,7 @@ use App\Models\Announce;
 use Filament\Forms;
 use Filament\Forms\Components\View;
 use Filament\Forms\Form;
+
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,7 +19,7 @@ class AnnounceResource extends Resource
     protected static ?string $model = Announce::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+ protected static ?string $pluralModelLabel = 'Announcement';
     public static function form(Form $form): Form
     {
         return $form
@@ -42,9 +43,10 @@ class AnnounceResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('image')
                             ->label('Announcement Image')
+                            // ->disk('public')
                             ->required()
                             ->image()
-                            ->directory('announcements/images')
+                          ->directory('announcements/images')
                             ->imagePreviewHeight('0'), // Hides the default preview
 
                         // Use the View component to render the custom Blade view for the image preview

@@ -7,6 +7,7 @@ use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Swis\Filament\Backgrounds\ImageProviders\MyImages;
 use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
@@ -26,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+         ->brandLogo(fn () => view('custom-logo'))
             ->default()
             ->id('admin')
             ->path('admin')
@@ -81,7 +83,10 @@ class AdminPanelProvider extends PanelProvider
                         'auth.password',
                     ]),
                 \Swis\Filament\Backgrounds\FilamentBackgroundsPlugin::make()
-                    ->showAttribution(false),
+                       ->imageProvider(
+                    MyImages::make()
+                        ->directory('images/backgrounds')
+                ),
 
                 \Awcodes\Overlook\OverlookPlugin::make()
                     ->includes([

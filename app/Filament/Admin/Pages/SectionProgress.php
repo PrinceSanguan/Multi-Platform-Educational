@@ -13,7 +13,7 @@ class SectionProgress extends Page
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Teachers';
+     protected static ?string $navigationGroup = 'Modules';
 
     protected static string $view = 'filament.admin.pages.section-progress';
 

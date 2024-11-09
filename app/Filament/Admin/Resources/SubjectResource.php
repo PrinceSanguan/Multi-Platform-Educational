@@ -15,7 +15,7 @@ class SubjectResource extends Resource
 {
     protected static ?string $model = Subject::class;
 
-    protected static ?string $navigationGroup = 'Teachers';
+     protected static ?string $navigationGroup = 'Modules';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

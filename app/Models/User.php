@@ -67,7 +67,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->is_active;
     }
-
+    public function scopeActive($query)
+{
+    return $query->where('is_active', true);
+}
     /**
      * Get all of the comments for the User
      *

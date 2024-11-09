@@ -3,7 +3,7 @@
         'name' => 'raugadh/fila-starter',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'f340b02a16f3816b88a114bb5e0a92ef8e67df42',
+        'reference' => 'b97c23ba576a9a1df3e97fd02be6828b04a77c45',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -1382,7 +1382,7 @@
         'raugadh/fila-starter' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'f340b02a16f3816b88a114bb5e0a92ef8e67df42',
+            'reference' => 'b97c23ba576a9a1df3e97fd02be6828b04a77c45',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

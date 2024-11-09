@@ -38,11 +38,16 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+         'root' => storage_path('app/public'),
+             'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
+        'documents' => [
+                    'driver' => 'local',
+                     'root' => storage_path('app/documents'),
+                     'visibility' => 'private', // This makes the disk private
+            ],
 
         's3' => [
             'driver' => 's3',

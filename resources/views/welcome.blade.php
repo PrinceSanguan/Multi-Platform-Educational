@@ -10,7 +10,7 @@
             scroll-behavior: smooth;
         }
         .hero {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ asset('storage/image.jpg') }}');
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{{ asset('storage/buset.png') }}");
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -80,10 +80,9 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <div id="home" class="flex flex-col items-start justify-center px-4 sm:px-12 hero">
-        <h1 class="mb-2 text-2xl font-bold sm:text-3xl">WELCOME TO</h1>
-        <h2 class="max-w-2xl mb-6 text-4xl font-bold sm:text-5xl"></h2>
+   <div id="home" class="flex flex-col items-start justify-center px-4 sm:px-12 hero">
+        <h1 class="mb-2 text-3xl font-bold sm:text-4xl md:text-5xl">WELCOME TO</h1>
+        <h2 class="max-w-2xl mb-6 text-4xl font-bold sm:text-5xl md:text-6xl">Goldenville Elementary School</h2>
         <a href="#about" class="text-lg btn-custom">LEARN MORE</a>
     </div>
 
@@ -94,17 +93,17 @@
             <p class="max-w-4xl mx-auto mb-8 text-lg">The interactive visual aid could include features such as gamification, simulations, and multimedia content to make learning more enjoyable and effective.</p>
             <a href="#" class="mb-8 text-lg btn-custom">Enroll Now</a>
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4">
-                <div class="mb-4">
-                    <img src="{{ asset('storage/classroom.png') }}" class="w-full h-auto max-w-xs mx-auto rounded-lg">
+               <div class="mb-4">
+                    <img src="{{ asset('storage/classroom1.jpg') }}" class="w-full h-auto max-w-xs mx-auto rounded-lg">
                 </div>
                 <div class="mb-4">
-                    <img src="{{ asset('storage/classroom.png') }}" class="w-full h-auto max-w-xs mx-auto rounded-lg">
+                    <img src="{{ asset('storage/classroom2.jpg') }}" class="w-full h-auto max-w-xs mx-auto rounded-lg">
                 </div>
                 <div class="mb-4">
-                    <img src="{{ asset('storage/classroom.png') }}" class="w-full h-auto max-w-xs mx-auto rounded-lg">
+                    <img src="{{ asset('storage/classroom3.jpg') }}" class="w-full h-auto max-w-xs mx-auto rounded-lg">
                 </div>
                 <div class="mb-4">
-                    <img src="{{ asset('storage/classroom.png') }}" class="w-full h-auto max-w-xs mx-auto rounded-lg">
+                    <img src="{{ asset('storage/classroom4.jpg') }}" class="w-full h-auto max-w-xs mx-auto rounded-lg">
                 </div>
             </div>
         </div>
@@ -135,8 +134,8 @@
                 <div class="text-center">
                     <h3 class="mb-2 text-lg font-semibold">Contact Us</h3>
                     <p>📞 +632139432871</p>
-                    <p>✉️ prcschool@school.com.ph</p>
-                    <p>📍 School Address</p>
+                    <p>✉️ goves@gmail.com</p>
+                    <p>📍 Phase 4B, Minuyan Proper, City of San Jose Delmonte Bulacan</p>
                 </div>
             </div>
         </div>

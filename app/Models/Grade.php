@@ -40,4 +40,8 @@ class Grade extends Model
 
         return $total / 4;
     }
+    public function student(){ return $this->belongsTo(User::class); } 
+    public function getStudentRolesAttribute() {
+        return $this->student->roles->pluck('name');
+     }
 }

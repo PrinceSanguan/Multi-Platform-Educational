@@ -17,6 +17,10 @@ class SectionStudentProgress extends Page
     protected static string $view = 'filament.admin.pages.section-student-progress';
 
     public $selectedSectionId = null;
+    public $sectionData = [
+        'labels' => [],
+        'averages' => [],
+    ];
 
     protected $listeners = ['sectionDataUpdated' => 'updateChartData'];
 
@@ -36,6 +40,14 @@ class SectionStudentProgress extends Page
 
         // Deny access for all other roles
         return false;
+    }
+
+    public function mount()
+    {
+        // Initialize the section data on page load, if a section is selected
+        if ($this->selectedSectionId) {
+            $this->sectionData = $this->getSectionData();
+        }
     }
 
     public function getSectionData()
@@ -72,9 +84,6 @@ class SectionStudentProgress extends Page
             ];
         }
 
-        // Debugging: Log the section data
-        Log::info('Section Data:', ['section' => $section]);
-
         $chartData = [
             'labels' => [],
             'averages' => [],
@@ -94,9 +103,12 @@ class SectionStudentProgress extends Page
             }
         }
 
-        // Debugging: Log the chart data
-        Log::info('Chart Data:', $chartData);
-
         return $chartData;
+    }
+
+    public function updatedSelectedSectionId($value)
+    {
+        // Update section data whenever the selected section changes
+        $this->sectionData = $this->getSectionData();
     }
 }

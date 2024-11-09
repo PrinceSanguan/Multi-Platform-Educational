@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sections', function (Blueprint $table) {
-            $table->unsignedBigInteger('teacher_id')->constrained('users')->onDelete('cascade')->nullable(); // Add teacher_id foreign key
+        Schema::create('arch_mods', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('sections', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('arch_mods');
     }
 };

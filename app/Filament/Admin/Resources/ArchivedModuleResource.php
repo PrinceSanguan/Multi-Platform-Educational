@@ -3,7 +3,7 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ArchivedModuleResource\Pages;
-use App\Models\Module;
+use App\Models\ArchMod;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\TextInput;
@@ -14,17 +14,19 @@ use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Response;
 
 class ArchivedModuleResource extends Resource
 {
-    protected static ?string $model = Module::class;
+    protected static ?string $model =  ArchMod::class;
 
-    protected static ?string $navigationGroup = 'Teachers';
+     protected static ?string $navigationGroup = 'Modules';
 
     protected static ?string $navigationLabel = 'Archived Modules';
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+
 
     public static function form(Form $form): Form
     {
@@ -71,7 +73,7 @@ class ArchivedModuleResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()->default(true),
+                // Tables\Filters\TrashedFilter::make()->default(true),
             ])
             ->actions([
                 Tables\Actions\Action::make('restore')
@@ -101,4 +103,24 @@ class ArchivedModuleResource extends Resource
             'index' => Pages\ListArchivedModules::route('/'),
         ];
     }
+public static function canViewAny(): bool
+{
+    $user = Filament::auth()->user();
+
+    // Hide from navigation for users with the 'student' or 'parent' role
+    if ($user->hasRole('student') || $user->hasRole('parent')) {
+        return false;
+    }
+
+    // Otherwise, defer to the parent method for other roles
+    return parent::canViewAny();
+}
+
+public static function canViewForNavigation(): bool
+{
+    $user = Filament::auth()->user();
+
+        // Hide from navigation for users with the 'student' role
+        return !$user->hasRole('student');
+}
 }
