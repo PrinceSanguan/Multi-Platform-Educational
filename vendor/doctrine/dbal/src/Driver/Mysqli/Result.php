@@ -8,6 +8,7 @@ use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\FetchUtils;
 use Doctrine\DBAL\Driver\Mysqli\Exception\StatementError;
 use Doctrine\DBAL\Driver\Result as ResultInterface;
+use Doctrine\DBAL\Exception\InvalidColumnIndex;
 use mysqli_sql_exception;
 use mysqli_stmt;
 
@@ -18,13 +19,11 @@ use function count;
 
 final class Result implements ResultInterface
 {
-    private mysqli_stmt $statement;
-
     /**
      * Whether the statement result has columns. The property should be used only after the result metadata
      * has been fetched ({@see $metadataFetched}). Otherwise, the property value is undetermined.
      */
-    private bool $hasColumns = false;
+    private readonly bool $hasColumns;
 
     /**
      * Mapping of statement result column indexes to their names. The property should be used only
@@ -32,7 +31,7 @@ final class Result implements ResultInterface
      *
      * @var array<int,string>
      */
-    private array $columnNames = [];
+    private readonly array $columnNames;
 
     /** @var mixed[] */
     private array $boundValues = [];
@@ -42,19 +41,15 @@ final class Result implements ResultInterface
      *
      * @throws Exception
      */
-    public function __construct(mysqli_stmt $statement)
+    public function __construct(private readonly mysqli_stmt $statement)
     {
-        $this->statement = $statement;
-
-        $meta = $statement->result_metadata();
+        $meta              = $statement->result_metadata();
+        $this->hasColumns  = $meta !== false;
+        $this->columnNames = $meta !== false ? array_column($meta->fetch_fields(), 'name') : [];
 
         if ($meta === false) {
             return;
         }
-
-        $this->hasColumns = true;
-
-        $this->columnNames = array_column($meta->fetch_fields(), 'name');
 
         $meta->free();
 
@@ -84,10 +79,7 @@ final class Result implements ResultInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function fetchNumeric()
+    public function fetchNumeric(): array|false
     {
         try {
             $ret = $this->statement->fetch();
@@ -112,10 +104,7 @@ final class Result implements ResultInterface
         return $values;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function fetchAssociative()
+    public function fetchAssociative(): array|false
     {
         $values = $this->fetchNumeric();
 
@@ -126,10 +115,7 @@ final class Result implements ResultInterface
         return array_combine($this->columnNames, $values);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function fetchOne()
+    public function fetchOne(): mixed
     {
         return FetchUtils::fetchOne($this);
     }
@@ -158,7 +144,7 @@ final class Result implements ResultInterface
         return FetchUtils::fetchFirstColumn($this);
     }
 
-    public function rowCount(): int
+    public function rowCount(): int|string
     {
         if ($this->hasColumns) {
             return $this->statement->num_rows;
@@ -170,6 +156,11 @@ final class Result implements ResultInterface
     public function columnCount(): int
     {
         return $this->statement->field_count;
+    }
+
+    public function getColumnName(int $index): string
+    {
+        return $this->columnNames[$index] ?? throw InvalidColumnIndex::new($index);
     }
 
     public function free(): void

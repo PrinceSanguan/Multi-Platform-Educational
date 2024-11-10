@@ -28,11 +28,12 @@ class StudentActivity extends Model
     public function students()
     {
         return $this->belongsToMany(User::class, 'student_activity_user', 'activity_id', 'user_id')
-                    ->whereHas('roles', function ($query) {
-                        $query->where('name', 'student'); // Filter users by role 'student'
-                    })
-                    ->withTimestamps(); // Enable timestamps on the pivot table
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'student'); // Filter users by role 'student'
+            })
+            ->withTimestamps(); // Enable timestamps on the pivot table
     }
+
     public function scopeForAuthenticatedUser(Builder $query)
     {
         if (Auth::check()) {

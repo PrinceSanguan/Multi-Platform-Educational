@@ -1,6 +1,7 @@
 @php
     use Filament\Support\Enums\Alignment;
     use Filament\Support\Enums\MaxWidth;
+    use Filament\Support\Facades\FilamentView;
 @endphp
 
 @props([
@@ -34,8 +35,10 @@
 
 @php
     $hasDescription = filled($description);
+    $hasFooter = (! \Filament\Support\is_slot_empty($footer)) || (is_array($footerActions) && count($footerActions)) || (! is_array($footerActions) && (! \Filament\Support\is_slot_empty($footerActions)));
     $hasHeading = filled($heading);
     $hasIcon = filled($icon);
+    $hasSlot = ! \Filament\Support\is_slot_empty($slot);
 
     if (! $alignment instanceof Alignment) {
         $alignment = filled($alignment) ? (Alignment::tryFrom($alignment) ?? $alignment) : null;
@@ -71,25 +74,20 @@
             this.$refs.modalContainer.dispatchEvent(
                 new CustomEvent('modal-closed', { id: '{{ $id }}' }),
             )
-
-            {{-- this.$nextTick(() => {
-                if (document.getElementsByClassName('fi-modal-open').length) {
-                    return
-                }
-
-                window.clearAllBodyScrollLocks()
-            }) --}}
         },
 
         open: function () {
-            this.isOpen = true
+            this.$nextTick(() => {
+                this.isOpen = true
 
-            {{-- window.clearAllBodyScrollLocks()
-            window.disableBodyScroll(this.$root) --}}
+                @if (FilamentView::hasSpaMode())
+                    this.$dispatch('ax-modal-opened')
+                @endif
 
-            this.$refs.modalContainer.dispatchEvent(
-                new CustomEvent('modal-opened', { id: '{{ $id }}' }),
-            )
+                this.$refs.modalContainer.dispatchEvent(
+                    new CustomEvent('modal-opened', { id: '{{ $id }}' }),
+                )
+            })
         },
     }"
     @if ($id)
@@ -176,7 +174,7 @@
                         x-transition:leave-end="scale-95 opacity-0"
                     @endif
                     {{
-                        ($extraModalWindowAttributeBag ?? new \Illuminate\View\ComponentAttributeBag())->class([
+                        ($extraModalWindowAttributeBag ?? new \Illuminate\View\ComponentAttributeBag)->class([
                             'fi-modal-window pointer-events-auto relative row-start-2 flex w-full cursor-default flex-col bg-white shadow-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10',
                             'fi-modal-slide-over-window ms-auto overflow-y-auto' => $slideOver,
                             // Using an arbitrary value instead of the h-dvh class that was added in Tailwind CSS v3.4.0
@@ -216,6 +214,7 @@
                         <div
                             @class([
                                 'fi-modal-header flex px-6 pt-6',
+                                'pb-6' => (! $hasSlot) && (! $hasFooter),
                                 'fi-sticky sticky top-0 z-10 border-b border-gray-200 bg-white pb-6 dark:border-white/10 dark:bg-gray-900' => $stickyHeader,
                                 'rounded-t-xl' => $stickyHeader && ! ($slideOver || ($width === MaxWidth::Screen)),
                                 match ($alignment) {
@@ -314,7 +313,7 @@
                         </div>
                     @endif
 
-                    @if (! \Filament\Support\is_slot_empty($slot))
+                    @if ($hasSlot)
                         <div
                             @class([
                                 'fi-modal-content flex flex-col gap-y-4 py-6',
@@ -327,7 +326,7 @@
                         </div>
                     @endif
 
-                    @if ((! \Filament\Support\is_slot_empty($footer)) || (is_array($footerActions) && count($footerActions)) || (! is_array($footerActions) && (! \Filament\Support\is_slot_empty($footerActions))))
+                    @if ($hasFooter)
                         <div
                             @class([
                                 'fi-modal-footer w-full',
@@ -336,7 +335,7 @@
                                 'fi-sticky sticky bottom-0 border-t border-gray-200 bg-white py-5 dark:border-white/10 dark:bg-gray-900' => $stickyFooter,
                                 'rounded-b-xl' => $stickyFooter && ! ($slideOver || ($width === MaxWidth::Screen)),
                                 'pb-6' => ! $stickyFooter,
-                                'mt-6' => (! $stickyFooter) && \Filament\Support\is_slot_empty($slot),
+                                'mt-6' => (! $stickyFooter) && (! $hasSlot),
                                 'mt-auto' => $slideOver,
                             ])
                         >

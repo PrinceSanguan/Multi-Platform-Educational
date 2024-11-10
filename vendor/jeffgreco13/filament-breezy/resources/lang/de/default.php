@@ -86,6 +86,7 @@ return [
                 'cancel_setup' => 'Einstellung abbrechen',
             ],
             'setup_key' => 'Einstellungsschlüssel',
+            'must_enable' => 'Sie müssen die Zwei-Faktor-Authentifizierung aktivieren, um diese Anwendung zu verwenden.',
             'not_enabled' => [
                 'title' => 'Sie haben die Zwei-Faktor-Authentifizierung nicht aktiviert.',
                 'description' => 'Wenn die Zwei-Faktor-Authentifizierung aktiviert ist, werden Sie während der Authentifizierung zur Eingabe eines sicheren, zufälligen Tokens aufgefordert. Sie können dieses Token über die Google Authenticator-App auf Ihrem Handy abrufen.',
@@ -96,10 +97,17 @@ return [
             ],
             'enabled' => [
                 'title' => 'Sie haben die Zwei-Faktor-Authentifizierung aktiviert!',
+                'notify' => 'Zwei-Faktor-Authentifizierung wurde aktiviert.',
                 'description' => 'Die Zwei-Faktor-Authentifizierung ist jetzt aktiviert. Dadurch wird Ihr Konto noch sicherer.',
                 'store_codes' => 'Speichern Sie diese Wiederherstellungscodes in einem sicheren Passwort-Manager. Sie können verwendet werden, um den Zugang zu Ihrem Konto wiederherzustellen, wenn Ihr Zwei-Faktor-Authentifizierungsgerät verloren geht.',
                 'show_codes' => 'Wiederherstellungscodes anzeigen',
                 'hide_codes' => 'Wiederherstellungscodes ausblenden',
+            ],
+            'disabling' => [
+                'notify' => 'Zwei-Faktor-Authentifizierung wurde deaktiviert.',
+            ],
+            'regenerate_codes' => [
+                'notify' => 'Neue Wiederherstellungscodes wurden generiert.',
             ],
             'confirmation' => [
                 'success_notification' => 'Code verifiziert. Zwei-Faktor-Authentifizierung aktiviert.',

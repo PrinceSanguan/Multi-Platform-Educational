@@ -92,6 +92,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->hasOne(Section::class, 'user_id');
     }
+
     public function parent()
     {
         return $this->belongsTo(User::class, 'parent_id'); // Assuming 'parent_id' is the foreign key in the 'users' table

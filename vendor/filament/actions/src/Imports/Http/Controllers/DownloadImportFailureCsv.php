@@ -22,10 +22,12 @@ class DownloadImportFailureCsv
             abort_unless($import->user()->is(auth()->user()), 403);
         }
 
-        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        $csv = Writer::createFromFileObject(new SplTempFileObject);
         $csv->setOutputBOM(ByteSequence::BOM_UTF8);
 
-        $columnHeaders = array_keys($import->failedRows()->first()->data);
+        $firstFailedRow = $import->failedRows()->first();
+
+        $columnHeaders = $firstFailedRow ? array_keys($firstFailedRow->data) : [];
         $columnHeaders[] = __('filament-actions::import.failure_csv.error_header');
 
         $csv->insertOne($columnHeaders);

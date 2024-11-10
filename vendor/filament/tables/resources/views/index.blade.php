@@ -10,6 +10,7 @@
     use Illuminate\Support\Str;
 
     $actions = $getActions();
+    $flatActionsCount = count($getFlatActions());
     $actionsAlignment = $getActionsAlignment();
     $actionsPosition = $getActionsPosition();
     $actionsColumnLabel = $getActionsColumnLabel();
@@ -69,6 +70,7 @@
     $reorderRecordsTriggerAction = $getReorderRecordsTriggerAction($isReordering);
     $toggleColumnsTriggerAction = $getToggleColumnsTriggerAction();
     $page = $this->getTablePage();
+    $defaultSortOptionLabel = $getDefaultSortOptionLabel();
 
     if (count($actions) && (! $isReordering)) {
         $columnsCount++;
@@ -283,7 +285,7 @@
         @endif
 
         <div
-            @if ($pollingInterval = $getPollingInterval())
+            @if ((! $isReordering) && ($pollingInterval = $getPollingInterval()))
                 wire:poll.{{ $pollingInterval }}
             @endif
             @class([
@@ -323,7 +325,7 @@
                                         return null
                                     "
                                     x-on:click="toggleSelectRecordsOnPage"
-                                    class="my-4"
+                                    class="fi-ta-page-checkbox my-4"
                                 />
                             @endif
 
@@ -357,7 +359,9 @@
                                             <x-filament::input.select
                                                 x-model="column"
                                             >
-                                                <option value="">-</option>
+                                                <option value="">
+                                                    {{ $defaultSortOptionLabel }}
+                                                </option>
 
                                                 @foreach ($sortableColumns as $column)
                                                     <option
@@ -790,7 +794,10 @@
                                         {{ $actionsColumnLabel }}
                                     </x-filament-tables::header-cell>
                                 @else
-                                    <th class="w-1"></th>
+                                    <th
+                                        aria-label="{{ trans_choice('filament-tables::table.columns.actions.label', $flatActionsCount) }}"
+                                        class="fi-ta-actions-header-cell w-1"
+                                    ></th>
                                 @endif
                             @endif
 
@@ -814,6 +821,7 @@
                                             return null
                                         "
                                         x-on:click="toggleSelectRecordsOnPage"
+                                        class="fi-ta-page-checkbox"
                                     />
                                 </x-filament-tables::selection.cell>
                             @endif
@@ -824,7 +832,10 @@
                                         {{ $actionsColumnLabel }}
                                     </x-filament-tables::header-cell>
                                 @else
-                                    <th class="w-1"></th>
+                                    <th
+                                        aria-label="{{ trans_choice('filament-tables::table.columns.actions.label', $flatActionsCount) }}"
+                                        class="fi-ta-actions-header-cell w-1"
+                                    ></th>
                                 @endif
                             @endif
                         @endif
@@ -867,7 +878,10 @@
                                         {{ $actionsColumnLabel }}
                                     </x-filament-tables::header-cell>
                                 @else
-                                    <th class="w-1"></th>
+                                    <th
+                                        aria-label="{{ trans_choice('filament-tables::table.columns.actions.label', $flatActionsCount) }}"
+                                        class="fi-ta-actions-header-cell w-1"
+                                    ></th>
                                 @endif
                             @endif
 
@@ -891,6 +905,7 @@
                                             return null
                                         "
                                         x-on:click="toggleSelectRecordsOnPage"
+                                        class="fi-ta-page-checkbox"
                                     />
                                 </x-filament-tables::selection.cell>
                             @endif
@@ -903,7 +918,10 @@
                                         {{ $actionsColumnLabel }}
                                     </x-filament-tables::header-cell>
                                 @else
-                                    <th class="w-1"></th>
+                                    <th
+                                        aria-label="{{ trans_choice('filament-tables::table.columns.actions.label', $flatActionsCount) }}"
+                                        class="fi-ta-actions-header-cell w-1"
+                                    ></th>
                                 @endif
                             @endif
                         @endif

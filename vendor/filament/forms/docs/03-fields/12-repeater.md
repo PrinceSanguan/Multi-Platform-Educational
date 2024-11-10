@@ -79,6 +79,21 @@ Repeater::make('members')
     ->addActionLabel('Add member')
 ```
 
+### Aligning the add action button
+
+By default, the add action is aligned in the center. You may adjust this using the `addActionAlignment()` method, passing an `Alignment` option of `Alignment::Start` or `Alignment::End`:
+
+```php
+use Filament\Forms\Components\Repeater;
+use Filament\Support\Enums\Alignment;
+
+Repeater::make('members')
+    ->schema([
+        // ...
+    ])
+    ->addActionAlignment(Alignment::Start)
+```
+
 ### Preventing the user from adding items
 
 You may prevent the user from adding items to the repeater using the `addable(false)` method:
@@ -475,6 +490,8 @@ You are trying to retrieve the value of `client_id` from inside the repeater ite
 
 You can use `../` to go up a level in the data structure, so `$get('../client_id')` is `$get('repeater.client_id')` and `$get('../../client_id')` is `$get('client_id')`.
 
+The special case of `$get()` with no arguments, or `$get('')` or `$get('./')`, will always return the full data array for the current repeater item.
+
 ## Repeater validation
 
 As well as all rules listed on the [validation](../validation) page, there are additional rules that are specific to repeaters.
@@ -692,7 +709,7 @@ livewire(EditPost::class, ['record' => $post])
 $undoRepeaterFake();
 ```
 
-You may also find it useful to access test the number of items in a repeater by passing a function to the `assertFormSet()` method:
+You may also find it useful to test the number of items in a repeater by passing a function to the `assertFormSet()` method:
 
 ```php
 use Filament\Forms\Components\Repeater;

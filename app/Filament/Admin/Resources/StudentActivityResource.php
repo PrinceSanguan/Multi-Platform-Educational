@@ -7,7 +7,6 @@ use App\Models\StudentActivity;
 use App\Models\User;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
-use Illuminate\Support\Facades\Response;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -19,8 +18,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class StudentActivityResource extends Resource
 {
@@ -29,7 +28,7 @@ class StudentActivityResource extends Resource
     protected static ?string $navigationGroup = 'Modules';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-   
+
     // public static function getEloquentQuery(): Builder
     // {
     //     return parent::getEloquentQuery()->where('user_id', auth()->id());
@@ -42,10 +41,10 @@ class StudentActivityResource extends Resource
             $user = auth()->user();
 
             if ($user->hasRole('super_admin') || $user->hasRole('teacher')) {
-              
+
                 return $query;
             } elseif ($user->hasRole('student')) {
-               
+
                 return $query->whereHas('students', function ($q) use ($user) {
                     $q->where('user_id', $user->id);
                 });
@@ -55,6 +54,7 @@ class StudentActivityResource extends Resource
         // Fallback for unauthenticated users (no records should be visible)
         return $query->whereRaw('0 = 1');
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -73,7 +73,7 @@ class StudentActivityResource extends Resource
                     ->previewable()                    // Show a preview
                     ->visibility('public')             // Set visibility to public
                     ->afterStateUpdated(function ($state) {
-                        Log::info('Uploaded file path: ' . $state); // Log the file path for debugging
+                        Log::info('Uploaded file path: '.$state); // Log the file path for debugging
                     }),
                 Select::make('status')
                     ->options([
@@ -87,6 +87,7 @@ class StudentActivityResource extends Resource
                     ->options(function () {
                         // Retrieve the assigned section for the authenticated user
                         $section = Auth::user()->section;
+
                         return $section ? [$section->id => $section->name] : [];
                     })
                     ->default(fn () => Auth::user()->section->id ?? null)
@@ -102,7 +103,7 @@ class StudentActivityResource extends Resource
                         $studentNames = $students->pluck('name')->implode(', ');
                         $set('student_names', $studentNames);
                     }),
-                    Select::make('students')
+                Select::make('students')
                     ->label('Assign Students')
                     ->multiple() // Allow selecting multiple students
                     ->preload()
@@ -133,32 +134,33 @@ class StudentActivityResource extends Resource
                     ->sortable(),
                 TextColumn::make('created_at')->dateTime(),
                 IconColumn::make('image_path')
-                ->label('Activity Image')
-                ->icon('heroicon-o-document')
-                ->color('success')
-                ->tooltip('Click to download')
-                ->action(function (StudentActivity $record) {
-                    $filePath = $record->image_path;
-            
-                    if (!$filePath) {
-                        Notification::make()
-                            ->title('File not found')
-                            ->danger()
-                            ->body('No file is associated with this record.')
-                            ->send();
-                        return;
-                    }
-            
-                    if (Storage::disk('public')->exists($filePath)) {
-                        return Storage::disk('public')->download($filePath);
-                    } else {
-                        Notification::make()
-                            ->title('File not found')
-                            ->danger()
-                            ->body('The requested file does not exist.')
-                            ->send();
-                    }
-                }),
+                    ->label('Activity Image')
+                    ->icon('heroicon-o-document')
+                    ->color('success')
+                    ->tooltip('Click to download')
+                    ->action(function (StudentActivity $record) {
+                        $filePath = $record->image_path;
+
+                        if (! $filePath) {
+                            Notification::make()
+                                ->title('File not found')
+                                ->danger()
+                                ->body('No file is associated with this record.')
+                                ->send();
+
+                            return;
+                        }
+
+                        if (Storage::disk('public')->exists($filePath)) {
+                            return Storage::disk('public')->download($filePath);
+                        } else {
+                            Notification::make()
+                                ->title('File not found')
+                                ->danger()
+                                ->body('The requested file does not exist.')
+                                ->send();
+                        }
+                    }),
             ])
             ->actions([
                 Action::make('toggleStatus')
@@ -171,7 +173,7 @@ class StudentActivityResource extends Resource
                         Notification::make()
                             ->title('Status Updated')
                             ->success()
-                            ->body('The activity has been ' . ($record->status === 'visible' ? 'made visible' : 'hidden') . '.')
+                            ->body('The activity has been '.($record->status === 'visible' ? 'made visible' : 'hidden').'.')
                             ->send();
                     })
                     ->requiresConfirmation()

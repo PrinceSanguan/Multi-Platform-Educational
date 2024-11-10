@@ -52,7 +52,7 @@ trait CanFormatState
         return $this;
     }
 
-    public function date(?string $format = null, ?string $timezone = null): static
+    public function date(string | Closure | null $format = null, ?string $timezone = null): static
     {
         $this->isDate = true;
 
@@ -65,13 +65,13 @@ trait CanFormatState
 
             return Carbon::parse($state)
                 ->setTimezone($timezone ?? $component->getTimezone())
-                ->translatedFormat($format);
+                ->translatedFormat($component->evaluate($format));
         });
 
         return $this;
     }
 
-    public function dateTime(?string $format = null, ?string $timezone = null): static
+    public function dateTime(string | Closure | null $format = null, ?string $timezone = null): static
     {
         $this->isDateTime = true;
 
@@ -99,7 +99,7 @@ trait CanFormatState
         return $this;
     }
 
-    public function dateTooltip(?string $format = null, ?string $timezone = null): static
+    public function dateTooltip(string | Closure | null $format = null, ?string $timezone = null): static
     {
         $format ??= Infolist::$defaultDateDisplayFormat;
 
@@ -110,13 +110,13 @@ trait CanFormatState
 
             return Carbon::parse($state)
                 ->setTimezone($timezone ?? $component->getTimezone())
-                ->translatedFormat($format);
+                ->translatedFormat($component->evaluate($format));
         });
 
         return $this;
     }
 
-    public function dateTimeTooltip(?string $format = null, ?string $timezone = null): static
+    public function dateTimeTooltip(string | Closure | null $format = null, ?string $timezone = null): static
     {
         $format ??= Infolist::$defaultDateTimeDisplayFormat;
 
@@ -125,7 +125,7 @@ trait CanFormatState
         return $this;
     }
 
-    public function timeTooltip(?string $format = null, ?string $timezone = null): static
+    public function timeTooltip(string | Closure | null $format = null, ?string $timezone = null): static
     {
         $format ??= Infolist::$defaultTimeDisplayFormat;
 
@@ -163,12 +163,13 @@ trait CanFormatState
             }
 
             $currency = $component->evaluate($currency) ?? Infolist::$defaultCurrency;
+            $locale = $component->evaluate($locale) ?? Infolist::$defaultNumberLocale ?? config('app.locale');
 
             if ($divideBy) {
                 $state /= $divideBy;
             }
 
-            return Number::currency($state, $currency, $component->evaluate($locale) ?? config('app.locale'));
+            return Number::currency($state, $currency, $locale);
         });
 
         return $this;
@@ -203,13 +204,15 @@ trait CanFormatState
                 );
             }
 
-            return Number::format($state, $decimalPlaces, $component->evaluate($maxDecimalPlaces), $component->evaluate($locale) ?? config('app.locale'));
+            $locale = $component->evaluate($locale) ?? Infolist::$defaultNumberLocale ?? config('app.locale');
+
+            return Number::format($state, $decimalPlaces, $component->evaluate($maxDecimalPlaces), $locale);
         });
 
         return $this;
     }
 
-    public function time(?string $format = null, ?string $timezone = null): static
+    public function time(string | Closure | null $format = null, ?string $timezone = null): static
     {
         $this->isTime = true;
 

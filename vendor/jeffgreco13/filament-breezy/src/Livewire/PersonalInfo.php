@@ -23,7 +23,7 @@ class PersonalInfo extends MyProfileComponent
 
     public static $sort = 10;
 
-    public function mount()
+    public function mount(): void
     {
         $this->user = Filament::getCurrentPanel()->auth()->user();
         $this->userClass = get_class($this->user);
@@ -36,7 +36,7 @@ class PersonalInfo extends MyProfileComponent
         $this->form->fill($this->user->only($this->only));
     }
 
-    protected function getProfileFormSchema()
+    protected function getProfileFormSchema(): array
     {
         $groupFields = Forms\Components\Group::make([
             $this->getNameComponent(),

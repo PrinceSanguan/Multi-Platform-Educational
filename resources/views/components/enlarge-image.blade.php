@@ -1,6 +1,10 @@
 @if ($getRecord() && $getRecord()->image)
     @php
+        // If the database only stores the filename, use this:
         $imageUrl = asset('storage/' . $getRecord()->image);
+        
+        // If the database stores the full path, use this instead:
+        // $imageUrl = asset('storage/' . $getRecord()->image);
     @endphp
     <div x-data="{ isOpen: false }">
         <!-- Thumbnail Image -->

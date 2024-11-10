@@ -15,7 +15,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class SectionResource extends Resource
 {
@@ -33,23 +32,23 @@ class SectionResource extends Resource
     //     return parent::getEloquentQuery()->where('user_id', auth()->id());
     // }
     public static function getEloquentQuery(): Builder
-{
-    $query = parent::getEloquentQuery();
+    {
+        $query = parent::getEloquentQuery();
 
-    // Check if the user is authenticated
-    if (auth()->check()) {
-        // Allow user with `user_id` 1 to see all records
-        if (auth()->id() === 1) {
-            return $query; // No filtering applied for user_id 1
+        // Check if the user is authenticated
+        if (auth()->check()) {
+            // Allow user with `user_id` 1 to see all records
+            if (auth()->id() === 1) {
+                return $query; // No filtering applied for user_id 1
+            }
+
+            // For other users, filter records by user_id
+            return $query->where('user_id', auth()->id());
         }
 
-        // For other users, filter records by user_id
-        return $query->where('user_id', auth()->id());
+        // Fallback for unauthenticated users (shouldn't happen in this context)
+        return $query->whereRaw('0 = 1'); // Return no records
     }
-
-    // Fallback for unauthenticated users (shouldn't happen in this context)
-    return $query->whereRaw('0 = 1'); // Return no records
-}
 
     public static function form(Form $form): Form
     {

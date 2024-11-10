@@ -7,7 +7,6 @@ use App\Models\Module;
 use App\Models\User;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -31,45 +30,42 @@ class ModuleResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-    
+
         // Check if the user is authenticated
         if (auth()->check()) {
             // Allow user with `user_id` 1 to see all records
             if (auth()->id() === 1) {
                 return $query; // No filtering applied for user_id 1
             }
-    
+
             // For other users, filter records by user_id
             return $query->where('user_id', auth()->id());
         }
-    
+
         // Fallback for unauthenticated users (shouldn't happen in this context)
         return $query->whereRaw('0 = 1'); // Return no records
     }
 
-
-
-
-    
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
                     ->required(),
-    
+
                 FileUpload::make('archive')
                     ->disk('public') // Ensure the file is stored on the public disk
                     ->directory('modules') // Save files in the modules directory within the public disk
                     ->downloadable()
                     ->label('Module File')
                     ->previewable(),
-    
+
                 Select::make('section_id')
                     ->label('Assigned Section')
                     ->options(function () {
                         // Retrieve the section assigned to the authenticated user
                         $section = Auth::user()->section;
+
                         return $section ? [$section->id => $section->name] : [];
                     })
                     ->default(fn () => Auth::user()->section->id ?? null)
@@ -80,17 +76,17 @@ class ModuleResource extends Resource
                         $students = User::whereHas('section', function ($query) use ($state) {
                             $query->where('id', $state);
                         })->get();
-    
+
                         // Get the student names and populate the 'student_names' field
                         $studentNames = $students->pluck('name')->implode(', ');
                         $set('student_names', $studentNames);
                     }),
-    
+
                 TextInput::make('student_names')
                     ->label('Assigned Students')
                     ->disabled()
                     ->reactive(),
-    
+
                 Hidden::make('user_id')
                     ->default(Auth::id()), // Automatically set the user ID
             ]);
@@ -103,13 +99,13 @@ class ModuleResource extends Resource
                 TextColumn::make('name'),
 
                 TextColumn::make('sections')
-                ->label('Sections')
-                ->sortable()
-                ->wrap()
-                ->getStateUsing(function ($record) {
-                    // Concatenate the names of all related sections
-                    return $record->sections->pluck('name')->join(', ');
-                }),
+                    ->label('Sections')
+                    ->sortable()
+                    ->wrap()
+                    ->getStateUsing(function ($record) {
+                        // Concatenate the names of all related sections
+                        return $record->sections->pluck('name')->join(', ');
+                    }),
 
                 // Direct download icon for files on the public disk
                 IconColumn::make('archive') // New column for PDF download

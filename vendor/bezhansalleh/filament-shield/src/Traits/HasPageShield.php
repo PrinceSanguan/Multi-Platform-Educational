@@ -34,17 +34,11 @@ trait HasPageShield
         $this->afterBooted();
     }
 
-    protected function beforeBooted(): void
-    {
-    }
+    protected function beforeBooted(): void {}
 
-    protected function afterBooted(): void
-    {
-    }
+    protected function afterBooted(): void {}
 
-    protected function beforeShieldRedirects(): void
-    {
-    }
+    protected function beforeShieldRedirects(): void {}
 
     protected function getShieldRedirectPath(): string
     {
@@ -62,12 +56,12 @@ trait HasPageShield
             ->toString();
     }
 
-    public static function shouldRegisterNavigation(): bool
+    public static function shouldRegisterNavigation(array $parameters = []): bool
     {
         return static::canAccess() && parent::shouldRegisterNavigation();
     }
 
-    public static function canAccess(): bool
+    public static function canAccess(array $parameters = []): bool
     {
         return Filament::auth()->user()->can(static::getPermissionName());
     }

@@ -6,7 +6,7 @@
     $id = $getId();
     $isDisabled = $isDisabled();
     $isPrefixInline = $isPrefixInline();
-    $isReorderable = $isReorderable();
+    $isReorderable = (! $isDisabled) && $isReorderable();
     $isSuffixInline = $isSuffixInline();
     $prefixActions = $getPrefixActions();
     $prefixIcon = $getPrefixIcon();
@@ -52,7 +52,7 @@
     >
         <div
             @if (FilamentView::hasSpaMode())
-                ax-load="visible"
+                {{-- format-ignore-start --}}ax-load="visible || event (ax-modal-opened)"{{-- format-ignore-end --}}
             @else
                 ax-load
             @endif

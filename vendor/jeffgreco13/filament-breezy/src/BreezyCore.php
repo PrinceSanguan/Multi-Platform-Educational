@@ -125,12 +125,12 @@ class BreezyCore implements Plugin
                     $tenantId = request()->route()->parameter('tenant');
                     if ($tenantId && $tenant = app($panel->getTenantModel())::where($panel->getTenantSlugAttribute() ?? 'id', $tenantId)->first()) {
                         $panel->userMenuItems([
-                            'account' => MenuItem::make()->url(Pages\MyProfilePage::getUrl(panel: $panel->getId(), tenant: $tenant)),
+                            'account' => MenuItem::make()->url($this->getMyProfilePageClass()::getUrl(panel: $panel->getId(), tenant: $tenant)),
                         ]);
                     }
                 } else {
                     $panel->userMenuItems([
-                        'account' => MenuItem::make()->url(Pages\MyProfilePage::getUrl()),
+                        'account' => MenuItem::make()->url($this->getMyProfilePageClass()::getUrl()),
                     ]);
                 }
             }
@@ -283,7 +283,7 @@ class BreezyCore implements Plugin
         $svg = (new Writer(
             new ImageRenderer(
                 new RendererStyle(150, 1, null, null, Fill::uniformColor(new Rgb(255, 255, 255), new Rgb(45, 55, 72))),
-                new SvgImageBackEnd()
+                new SvgImageBackEnd
             )
         ))->writeString($url);
 

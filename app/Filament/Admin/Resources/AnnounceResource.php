@@ -10,8 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder; // Use the correct Builder here
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Database\Eloquent\Builder;
 
 class AnnounceResource extends Resource
 {
@@ -44,16 +43,16 @@ class AnnounceResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('image')
                             ->label('Announcement Image')
-                            // ->disk('public')
                             ->required()
                             ->image()
-                            ->directory('announcements/images')
-                            ->imagePreviewHeight('0'), // Hides the default preview
+                        // ->imagePreviewHeight('0')
+                        , // Hides the default preview
 
-                        // Use the View component to render the custom Blade view for the image preview
+                        // Pass the record to the custom view component
                         View::make('components.enlarge-image')->viewData([
-                            'record' => fn () => $form->getRecord(),
+                            'imageUrl' => fn ($get) => $get('image') ? asset('storage/'.$get('image')) : null,
                         ]),
+
                         Forms\Components\DatePicker::make('start_date')
                             ->label('Start Date')
                             ->required(),
@@ -72,7 +71,7 @@ class AnnounceResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('body')->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image')->disk('public'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable(),
             ])
@@ -83,7 +82,6 @@ class AnnounceResource extends Resource
                         Forms\Components\DatePicker::make('end_date')->label('To'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
-                        // Using Illuminate\Database\Eloquent\Builder for the query
                         return $query
                             ->when($data['start_date'], fn (Builder $query, $date) => $query->where('created_at', '>=', $date))
                             ->when($data['end_date'], fn (Builder $query, $date) => $query->where('created_at', '<=', $date));

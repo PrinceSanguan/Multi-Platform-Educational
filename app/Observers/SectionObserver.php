@@ -11,7 +11,6 @@ class SectionObserver
     /**
      * Handle the Section "created" event.
      *
-     * @param  \App\Models\Section  $section
      * @return void
      */
     public function created(Section $section)
@@ -22,7 +21,6 @@ class SectionObserver
     /**
      * Handle the Section "updated" event.
      *
-     * @param  \App\Models\Section  $section
      * @return void
      */
     public function updated(Section $section)
@@ -33,7 +31,6 @@ class SectionObserver
     /**
      * Update the section_id for the assigned user.
      *
-     * @param  \App\Models\Section  $section
      * @return void
      */
     protected function updateUserSectionId(Section $section)

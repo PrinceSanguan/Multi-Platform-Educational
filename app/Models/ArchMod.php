@@ -12,7 +12,7 @@ class ArchMod extends Model
 {
     use HasFactory, HasPanelShield, HasRoles, SoftDeletes;
 
-    protected $table = 'modules'; // Points to the same table as the Module model
+    protected $table = 'modules';
 
     protected static function booted()
     {

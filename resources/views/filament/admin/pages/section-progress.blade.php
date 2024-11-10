@@ -1,19 +1,15 @@
 <x-filament::page>
     <div>
-        <h2 class="text-2xl font-bold mb-4">Overall Progress of Each Section</h2>
-
-        <!-- Add a container for the chart -->
+        <h2 class="text-2xl font-bold mb-4">Section and Student Progress</h2>
         <canvas id="sectionProgressChart" width="400" height="200"></canvas>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Fetch the data passed from the backend
             const chartData = @json($this->getSectionData());
 
-            // Debug: Log the data to the console to verify it
-            console.log('Chart Data:', chartData);
+            console.log('Chart Data:', chartData); // Debugging: Verify the data structure
 
             // Check if chartData is valid
             if (!chartData || !chartData.labels || !chartData.averages) {
@@ -21,14 +17,14 @@
                 return; // Exit if data is invalid
             }
 
-            // Initialize the chart
+            // Initialize the chart with each student's average grade in their respective section
             const ctx = document.getElementById('sectionProgressChart').getContext('2d');
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: chartData.labels,
+                    labels: chartData.labels, // Section - Student names
                     datasets: [{
-                        label: 'Average Grades',
+                        label: 'Average Grades by Student',
                         data: chartData.averages,
                         backgroundColor: 'rgba(54, 162, 235, 0.6)',
                         borderColor: 'rgba(54, 162, 235, 1)',
@@ -36,12 +32,37 @@
                     }]
                 },
                 options: {
+                    responsive: true,
                     scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Sections - Students'
+                            }
+                        },
                         y: {
                             beginAtZero: true,
-                            max: 100
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Average Grade'
+                            }
                         }
-                    }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 20,
+                            right: 20
+                        }
+                    },
+                    barThickness: 25 // Adjust as needed for clarity
                 }
             });
         });

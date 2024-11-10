@@ -19,9 +19,9 @@ class Grade extends Model
         'fourth_quarter',
     ];
 
-    public function user()
+    public function student()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function section()

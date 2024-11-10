@@ -21,23 +21,23 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('super_admin');
-    //     $user2 = \App\Models\User::factory()->create([
-    //         'name' => 'teacher',
-    //         'email' => 'teacher@admin.com',
-    //     ]);
+        //     $user2 = \App\Models\User::factory()->create([
+        //         'name' => 'teacher',
+        //         'email' => 'teacher@admin.com',
+        //     ]);
 
-    //     $user2->assignRole('teacher');
-    //     $user3 = \App\Models\User::factory()->create([
-    //         'name' => 'student',
-    //         'email' => 'student@admin.com',
-    //     ]);
+        //     $user2->assignRole('teacher');
+        //     $user3 = \App\Models\User::factory()->create([
+        //         'name' => 'student',
+        //         'email' => 'student@admin.com',
+        //     ]);
 
-    //     $user3->assignRole('student');
-    //     $user4 = \App\Models\User::factory()->create([
-    //         'name' => 'parent',
-    //         'email' => 'parent@admin.com',
-    //     ]);
+        //     $user3->assignRole('student');
+        //     $user4 = \App\Models\User::factory()->create([
+        //         'name' => 'parent',
+        //         'email' => 'parent@admin.com',
+        //     ]);
 
-    //     $user4->assignRole('parent');
-     }
+        //     $user4->assignRole('parent');
+    }
 }

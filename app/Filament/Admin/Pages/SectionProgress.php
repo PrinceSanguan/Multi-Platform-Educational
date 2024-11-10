@@ -19,13 +19,15 @@ class SectionProgress extends Page
 
     public function getSectionData()
     {
-        // Get the authenticated user
         $user = Auth::user();
 
-        // Check if the user is a teacher and fetch sections assigned to them
-        $sections = Section::with('students.grades')
-            ->where('teacher_id', $user->id) // Assuming 'teacher_id' exists in the sections table
-            ->get();
+        // For super_admin or principal, get all sections; otherwise, get sections assigned to the teacher
+        $sectionsQuery = Section::with('students.grades');
+        if ($user->hasRole('teacher')) {
+            $sectionsQuery->where('user_id', $user->id);
+        }
+
+        $sections = $sectionsQuery->get();
 
         $chartData = [
             'labels' => [],
@@ -33,16 +35,16 @@ class SectionProgress extends Page
         ];
 
         foreach ($sections as $section) {
-            // Calculate the average grade for the section
-            $averageGrades = $section->students->flatMap->grades->map(function ($grade) {
-                return ($grade->first_quarter + $grade->second_quarter + $grade->third_quarter + $grade->fourth_quarter) / 4;
-            });
+            // For each section, calculate the average grade for each student
+            foreach ($section->students as $student) {
+                $averageGrade = $student->grades->map(function ($grade) {
+                    return ($grade->first_quarter + $grade->second_quarter + $grade->third_quarter + $grade->fourth_quarter) / 4;
+                })->avg();
 
-            $average = $averageGrades->isNotEmpty() ? $averageGrades->avg() : 0;
-
-            // Add section name and average to the chart data
-            $chartData['labels'][] = $section->name;
-            $chartData['averages'][] = round($average, 2);
+                // Add section name with student name as a label and the average grade as data
+                $chartData['labels'][] = "{$section->name} - {$student->name}";
+                $chartData['averages'][] = round($averageGrade, 2);
+            }
         }
 
         return $chartData;

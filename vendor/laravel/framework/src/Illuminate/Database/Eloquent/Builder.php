@@ -932,7 +932,7 @@ class Builder implements BuilderContract
      *
      * @param  string|\Illuminate\Contracts\Database\Query\Expression  $column
      * @param  string|null  $key
-     * @return \Illuminate\Support\Collection<int|string, mixed>
+     * @return \Illuminate\Support\Collection<array-key, mixed>
      */
     public function pluck($column, $key = null)
     {
@@ -1537,8 +1537,8 @@ class Builder implements BuilderContract
     /**
      * Set the relationships that should be eager loaded.
      *
-     * @param  string|array  $relations
-     * @param  string|\Closure|null  $callback
+     * @param  array<array-key, array|(\Closure(\Illuminate\Database\Eloquent\Relations\Relation<*,*,*>): mixed)|string>|string  $relations
+     * @param  (\Closure(\Illuminate\Database\Eloquent\Relations\Relation<*,*,*>): mixed)|string|null  $callback
      * @return $this
      */
     public function with($relations, $callback = null)
@@ -1572,7 +1572,7 @@ class Builder implements BuilderContract
     /**
      * Set the relationships that should be eager loaded while removing any previously added eager loading specifications.
      *
-     * @param  mixed  $relations
+     * @param  array<array-key, array|(\Closure(\Illuminate\Database\Eloquent\Relations\Relation<*,*,*>): mixed)|string>|string  $relations
      * @return $this
      */
     public function withOnly($relations)

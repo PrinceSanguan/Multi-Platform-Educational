@@ -327,7 +327,7 @@ class Blueprint
     public function creating()
     {
         return collect($this->commands)->contains(function ($command) {
-            return $command->name === 'create';
+            return ! $command instanceof ColumnDefinition && $command->name === 'create';
         });
     }
 
@@ -1039,16 +1039,16 @@ class Blueprint
         $column = $column ?: $model->getForeignKey();
 
         if ($model->getKeyType() === 'int' && $model->getIncrementing()) {
-            return $this->foreignId($column);
+            return $this->foreignId($column)->table($model->getTable());
         }
 
         $modelTraits = class_uses_recursive($model);
 
         if (in_array(HasUlids::class, $modelTraits, true)) {
-            return $this->foreignUlid($column);
+            return $this->foreignUlid($column, 26)->table($model->getTable());
         }
 
-        return $this->foreignUuid($column);
+        return $this->foreignUuid($column)->table($model->getTable());
     }
 
     /**
@@ -1453,6 +1453,20 @@ class Blueprint
     }
 
     /**
+     * Create a new vector column on the table.
+     *
+     * @param  string  $column
+     * @param  int|null  $dimensions
+     * @return \Illuminate\Database\Schema\ColumnDefinition
+     */
+    public function vector($column, $dimensions = null)
+    {
+        $options = $dimensions ? compact('dimensions') : [];
+
+        return $this->addColumn('vector', $column, $options);
+    }
+
+    /**
      * Add the proper columns for a polymorphic table.
      *
      * @param  string  $name
@@ -1807,7 +1821,7 @@ class Blueprint
         return $this->commands;
     }
 
-    /*
+    /**
      * Determine if the blueprint has state.
      *
      * @param  mixed  $name

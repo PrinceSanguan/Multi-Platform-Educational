@@ -69,6 +69,20 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
+     * Compile the query to determine if the given table exists.
+     *
+     * @param  string  $table
+     * @return string
+     */
+    public function compileTableExists($table)
+    {
+        return sprintf(
+            'select exists (select 1 from sqlite_master where name = %s and type = \'table\') as "exists"',
+            $this->quoteString(str_replace('.', '__', $table))
+        );
+    }
+
+    /**
      * Compile the query to determine the tables.
      *
      * @param  bool  $withSize
@@ -591,7 +605,7 @@ class SQLiteGrammar extends Grammar
      */
     public function compileEnableForeignKeyConstraints()
     {
-        return 'PRAGMA foreign_keys = ON;';
+        return $this->pragma('foreign_keys', 'ON');
     }
 
     /**
@@ -601,7 +615,40 @@ class SQLiteGrammar extends Grammar
      */
     public function compileDisableForeignKeyConstraints()
     {
-        return 'PRAGMA foreign_keys = OFF;';
+        return $this->pragma('foreign_keys', 'OFF');
+    }
+
+    /**
+     * Compile the command to set the busy timeout.
+     *
+     * @param  int  $milliseconds
+     * @return string
+     */
+    public function compileSetBusyTimeout($milliseconds)
+    {
+        return $this->pragma('busy_timeout', $milliseconds);
+    }
+
+    /**
+     * Compile the command to set the journal mode.
+     *
+     * @param  string  $mode
+     * @return string
+     */
+    public function compileSetJournalMode($mode)
+    {
+        return $this->pragma('journal_mode', $mode);
+    }
+
+    /**
+     * Compile the command to set the synchronous mode.
+     *
+     * @param  string  $mode
+     * @return string
+     */
+    public function compileSetSynchronous($mode)
+    {
+        return $this->pragma('synchronous', $mode);
     }
 
     /**
@@ -611,7 +658,7 @@ class SQLiteGrammar extends Grammar
      */
     public function compileEnableWriteableSchema()
     {
-        return 'PRAGMA writable_schema = 1;';
+        return $this->pragma('writable_schema', 1);
     }
 
     /**
@@ -621,7 +668,19 @@ class SQLiteGrammar extends Grammar
      */
     public function compileDisableWriteableSchema()
     {
-        return 'PRAGMA writable_schema = 0;';
+        return $this->pragma('writable_schema', 0);
+    }
+
+    /**
+     * Get the SQL to set a PRAGMA value.
+     *
+     * @param  string  $name
+     * @param  mixed  $value
+     * @return string
+     */
+    protected function pragma(string $name, mixed $value): string
+    {
+        return sprintf('PRAGMA %s = %s;', $name, $value);
     }
 
     /**

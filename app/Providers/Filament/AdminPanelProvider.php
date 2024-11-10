@@ -90,36 +90,36 @@ class AdminPanelProvider extends PanelProvider
 
                 \Awcodes\Overlook\OverlookPlugin::make()
                     ->includes([
-                            \App\Filament\Admin\Resources\UserResource::class,
-                        ]),
+                        \App\Filament\Admin\Resources\UserResource::class,
+                    ]),
 
                 \Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin::make()->color('#29b'),
             ])
             ->navigationGroups([
 
-                    NavigationGroup::make()
-                        ->label('Administration')
-                        ->icon('heroicon-o-cog-8-tooth'),
+                NavigationGroup::make()
+                    ->label('Administration')
+                    ->icon('heroicon-o-cog-8-tooth'),
             ])
             ->resources([
-                    // config('filament-logger.activity_resource'),
+                // config('filament-logger.activity_resource'),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->middleware([
-                    EncryptCookies::class,
-                    AddQueuedCookiesToResponse::class,
-                    StartSession::class,
-                    AuthenticateSession::class,
-                    ShareErrorsFromSession::class,
-                    VerifyCsrfToken::class,
-                    SubstituteBindings::class,
-                    DisableBladeIconComponents::class,
-                    DispatchServingFilamentEvent::class,
+                EncryptCookies::class,
+                AddQueuedCookiesToResponse::class,
+                StartSession::class,
+                AuthenticateSession::class,
+                ShareErrorsFromSession::class,
+                VerifyCsrfToken::class,
+                SubstituteBindings::class,
+                DisableBladeIconComponents::class,
+                DispatchServingFilamentEvent::class,
 
-                    \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
+                \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
             ])
             ->authMiddleware([
-                    Authenticate::class,
+                Authenticate::class,
             ]);
     }
 }

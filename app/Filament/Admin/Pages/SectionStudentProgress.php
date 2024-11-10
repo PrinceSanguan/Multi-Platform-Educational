@@ -16,7 +16,7 @@ class SectionStudentProgress extends Page
 
     protected static string $view = 'filament.admin.pages.section-student-progress';
 
-    public $selectedSectionId = null;
+    public $selectedSectionId = null; // Set this dynamically, e.g., via user selection or default
 
     protected $listeners = ['sectionDataUpdated' => 'updateChartData'];
 
@@ -24,18 +24,9 @@ class SectionStudentProgress extends Page
     {
         $user = Auth::user();
 
-        // Allow super admins to view the page
-        if ($user->hasRole('super_admin')) {
-            return true;
-        }
-
-        // Check if the user is a teacher assigned to the section
-        if ($user->hasRole('teacher') && $user->sections()->exists()) {
-            return true;
-        }
-
-        // Deny access for all other roles
-        return false;
+        // Allow access if the user has the 'super_admin' or 'principal' role,
+        // or if the user is a 'teacher' with assigned sections
+        return $user->hasAnyRole(['super_admin', 'principal']) || ($user->hasRole('teacher') && $user->sections()->exists());
     }
 
     public function getSectionData()
@@ -47,25 +38,9 @@ class SectionStudentProgress extends Page
             ];
         }
 
-        // Fetch section with students and their grades
         $section = Section::with('students.grades')->find($this->selectedSectionId);
 
         if (! $section) {
-            return [
-                'labels' => [],
-                'averages' => [],
-            ];
-        }
-
-        // Check if the teacher is assigned to this section
-        if (Auth::user()->hasRole('teacher') && Auth::user()->id !== $section->teacher_id) {
-            // Log an unauthorized access attempt
-            Log::warning('Unauthorized access attempt to section data.', [
-                'user_id' => Auth::user()->id,
-                'section_id' => $this->selectedSectionId,
-            ]);
-
-            // Return empty data if the teacher is not assigned to the section
             return [
                 'labels' => [],
                 'averages' => [],
@@ -80,18 +55,15 @@ class SectionStudentProgress extends Page
             'averages' => [],
         ];
 
-        if ($section) {
-            foreach ($section->students as $student) {
-                $chartData['labels'][] = $student->name;
+        foreach ($section->students as $student) {
+            $chartData['labels'][] = $student->name;
 
-                // Calculate the student's average grade
-                $grades = $student->grades;
-                $average = $grades->map(function ($grade) {
-                    return ($grade->first_quarter + $grade->second_quarter + $grade->third_quarter + $grade->fourth_quarter) / 4;
-                })->avg();
+            // Calculate the student's average grade
+            $average = $student->grades->map(function ($grade) {
+                return ($grade->first_quarter + $grade->second_quarter + $grade->third_quarter + $grade->fourth_quarter) / 4;
+            })->avg();
 
-                $chartData['averages'][] = round($average, 2);
-            }
+            $chartData['averages'][] = round($average, 2);
         }
 
         // Debugging: Log the chart data

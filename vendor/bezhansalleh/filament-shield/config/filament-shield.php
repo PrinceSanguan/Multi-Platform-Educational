@@ -13,6 +13,8 @@ return [
         'cluster' => null,
     ],
 
+    'tenant_model' => null,
+
     'auth_provider_model' => [
         'fqcn' => 'App\\Models\\User',
     ],
@@ -83,7 +85,7 @@ return [
     ],
 
     'register_role_policy' => [
-        'enabled' => false,
+        'enabled' => true,
     ],
 
 ];

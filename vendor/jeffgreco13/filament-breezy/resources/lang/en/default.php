@@ -54,7 +54,7 @@ return [
             'must_enable' => 'You must enable Two Factor Authentication to use this application.',
             'not_enabled' => [
                 'title' => 'You have not enabled two factor authentication.',
-                'description' => "When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone's Google Authenticator application.",
+                'description' => 'When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You can use Authenticator apps on your smart phone such as Google Authenticator, Microsoft Authenticator etc to facilitate this',
             ],
             'finish_enabling' => [
                 'title' => 'Finish enabling two factor authentication.',

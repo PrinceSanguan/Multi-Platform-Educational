@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
+
 class Section extends Model
 {
     use HasFactory;
@@ -31,6 +31,7 @@ class Section extends Model
     {
         return $this->belongsTo(studentactivity::class, 'studentactivity_id');
     }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -40,6 +41,7 @@ class Section extends Model
     {
         return $this->belongsToMany(Subject::class, 'section_subject', 'section_id', 'subject_id');
     }
+
     public function scopeForAuthenticatedUser(Builder $query)
     {
         if (Auth::check()) {
@@ -52,6 +54,7 @@ class Section extends Model
 
         return $query;
     }
+
     public function scopeForUser(Builder $query)
     {
         if (Auth::check()) {
