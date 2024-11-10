@@ -20,40 +20,40 @@ class UserImporter extends Importer
             ImportColumn::make('email')
                 ->requiredMapping()
                 ->rules(['required', 'email', 'max:255']),
-            ImportColumn::make('avatar_url')
-                ->rules(['max:255']),
-            ImportColumn::make('email_verified_at')
-                ->rules(['email', 'datetime']),
+            // ImportColumn::make('avatar_url')
+            //     ->rules(['max:255']),
+            // ImportColumn::make('email_verified_at')
+            //     ->rules(['email', 'datetime']),
             ImportColumn::make('password')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('is_active')
-                ->requiredMapping()
-                ->boolean()
-                ->rules(['required', 'boolean']),
-            ImportColumn::make('section_id')
-                ->numeric()
-                ->rules(['integer']),
-            ImportColumn::make('theme')
-                ->rules(['max:255']),
-            ImportColumn::make('theme_color')
-                ->rules(['max:255']),
-            ImportColumn::make('active_status')
-                ->requiredMapping()
-                ->boolean()
-                ->rules(['required', 'boolean']),
-            ImportColumn::make('avatar')
-                ->requiredMapping()
-                ->rules(['required', 'max:255']),
-            ImportColumn::make('dark_mode')
-                ->requiredMapping()
-                ->boolean()
-                ->rules(['required', 'boolean']),
-            ImportColumn::make('messenger_color')
-                ->rules(['max:255']),
-            ImportColumn::make('parent_id')
-                ->numeric()
-                ->rules(['integer']),
+            // ImportColumn::make('is_active')
+            //     ->requiredMapping()
+            //     ->boolean()
+            //     ->rules(['required', 'boolean']),
+            // ImportColumn::make('section_id')
+            //     ->numeric()
+            //     ->rules(['integer']),
+            // ImportColumn::make('theme')
+            //     ->rules(['max:255']),
+            // ImportColumn::make('theme_color')
+            //     ->rules(['max:255']),
+            // ImportColumn::make('active_status')
+            //     ->requiredMapping()
+            //     ->boolean()
+            //     ->rules(['required', 'boolean']),
+            // ImportColumn::make('avatar')
+            //     ->requiredMapping()
+            //     ->rules(['required', 'max:255']),
+            // ImportColumn::make('dark_mode')
+            //     ->requiredMapping()
+            //     ->boolean()
+            //     ->rules(['required', 'boolean']),
+            // ImportColumn::make('messenger_color')
+            //     ->rules(['max:255']),
+            // ImportColumn::make('parent_id')
+            //     ->numeric()
+            //     ->rules(['integer']),
         ];
     }
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('avatar_url')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(false);
             $table->unsignedBigInteger('section_id')->nullable()->constrained('sections')->onDelete('set null');
             $table->rememberToken();
             $table->timestamps();

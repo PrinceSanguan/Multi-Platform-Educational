@@ -11,11 +11,13 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use phpDocumentor\Reflection\Types\Null_;
 use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends Resource
@@ -144,34 +146,22 @@ class UserResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                SelectFilter::make('role')
-                    ->label('Role')
-                    ->options([
-                        'student' => 'Student',
-                        'teacher' => 'Teacher',
-                        'parent' => 'Parent',
-                        'admin' => 'Admin',
-                        'super_admin' => 'Super Admin',
-                    ])
-                    ->query(function (Builder $query, $state) {
-                        // Only filter by role if a specific role is selected (not empty)
-                        if (! empty($state)) {
-                            $query->whereHas('roles', function (Builder $query) use ($state) {
-                                $query->where('name', $state);
-                            });
-
-                        }
-
-                    }),
+            SelectFilter::make('roles')
+            ->relationship('roles', 'name'),
+            Filter::make('active')
+            ->label('Not Activated')
+            ->query(fn (Builder $query) => $query->where('is_active', 0))
+            ->toggle(),  // This filter shows users with 'is_active' set to 0
+            
             ])
             ->headerActions([
                 //         ImportAction::make('Import')
                 // ->importer(UserImporter::class),
+          
 
             ])
             ->actions([
-                // ImportAction::make('Import')
-                // ->importer(UserImporter::class),
+                
                 Tables\Actions\RestoreAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -189,7 +179,8 @@ class UserResource extends Resource
                 ]),
             ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
+                
             ]);
     }
 
